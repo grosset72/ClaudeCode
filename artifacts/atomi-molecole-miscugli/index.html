@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atomi, molecole e miscugli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f4ef; --card:#ffffff; --ink:#1f2328; --muted:#5f6670; --line:#e3ded3;
+    --accent:#2b6cb0; --accent-soft:#e6f0fa; --ok:#1f8a4c; --ok-soft:#e5f5ec; --ko:#c2412d; --ko-soft:#fbeae6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Nunito,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+  header{padding:32px 20px 8px;max-width:980px;margin:0 auto}
+  h1{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 4px;font-weight:800;letter-spacing:-.01em}
+  header p{margin:0;color:var(--muted)}
+  nav{max-width:980px;margin:18px auto 0;padding:0 20px;display:flex;gap:8px}
+  nav button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 18px;border-radius:999px;cursor:pointer}
+  nav button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  main{max-width:980px;margin:0 auto;padding:20px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .def{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px}
+  .def .pic{background:#fbfaf7;border-radius:12px;height:150px;display:flex;align-items:center;justify-content:center}
+  .def .pic svg{height:140px;width:auto;max-width:100%}
+  .def h2{margin:4px 0 0;font-size:1.25rem}
+  .def p{margin:0}
+  .def .ex{color:var(--muted);font-size:.95rem}
+  .tag{display:inline-block;font-size:.75rem;font-weight:700;background:var(--accent-soft);color:var(--accent);padding:2px 10px;border-radius:999px;align-self:flex-start}
+  .scheme{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+  .scheme h2{margin:0 0 10px;font-size:1.1rem}
+  .tree{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-weight:700}
+  .tree span{background:#f1efe9;padding:4px 10px;border-radius:8px}
+  .tree i{font-style:normal;color:var(--muted)}
+  /* quiz */
+  .quiz{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;max-width:720px;margin:0 auto}
+  .progress{height:8px;background:#eee9df;border-radius:99px;overflow:hidden;margin-bottom:14px}
+  .progress div{height:100%;background:var(--accent);width:0;transition:width .3s}
+  .meta{display:flex;justify-content:space-between;color:var(--muted);font-weight:700;font-size:.9rem;margin-bottom:10px}
+  .qimg{background:#fbfaf7;border-radius:14px;display:flex;justify-content:center;padding:10px;margin-bottom:14px}
+  .qimg svg{width:100%;max-width:340px;height:auto;max-height:240px}
+  .qtext{font-size:1.15rem;font-weight:700;margin:0 0 14px}
+  .opts{display:grid;gap:10px}
+  .opt{font:inherit;text-align:left;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:#fff;cursor:pointer;display:flex;gap:10px;align-items:center;color:var(--ink)}
+  .opt:hover:not(:disabled){border-color:var(--accent)}
+  .opt b{display:inline-flex;width:28px;height:28px;border-radius:50%;background:#f1efe9;align-items:center;justify-content:center;flex:none}
+  .opt.ok{border-color:var(--ok);background:var(--ok-soft)}
+  .opt.ko{border-color:var(--ko);background:var(--ko-soft)}
+  .opt:disabled{cursor:default}
+  .fb{margin-top:14px;padding:12px 14px;border-radius:12px;display:none}
+  .fb.show{display:block}
+  .fb.ok{background:var(--ok-soft);color:#14532d}
+  .fb.ko{background:var(--ko-soft);color:#7c2d12}
+  .actions{display:flex;justify-content:flex-end;margin-top:16px}
+  .btn{font:inherit;font-weight:800;background:var(--accent);color:#fff;border:0;padding:12px 22px;border-radius:12px;cursor:pointer}
+  .btn:disabled{opacity:.35;cursor:default}
+  .result{text-align:center}
+  .result .score{font-size:3rem;font-weight:800;margin:6px 0}
+  .review{text-align:left;margin:18px 0;display:grid;gap:8px}
+  .review div{padding:10px 12px;border-radius:10px;font-size:.95rem}
+  .review .r-ok{background:var(--ok-soft)} .review .r-ko{background:var(--ko-soft)}
+  [hidden]{display:none!important}
+  footer{max-width:980px;margin:0 auto;padding:10px 20px 40px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>Atomi, molecole e miscugli</h1>
+  <p>Studia le definizioni, poi mettiti alla prova con il quiz illustrato.</p>
+</header>
+<nav role="tablist">
+  <button role="tab" id="tab-def" aria-selected="true">📘 Definizioni</button>
+  <button role="tab" id="tab-quiz" aria-selected="false">✏️ Quiz (10 domande)</button>
+</nav>
+
+<main>
+  <section id="view-def">
+    <div class="scheme">
+      <h2>Lo schema in breve</h2>
+      <div class="tree">
+        <span>Atomi</span><i>→ si uniscono in</i><span>Molecole</span><i>→ formano</i><span>Sostanze pure</span><i>→ mescolate formano</i><span>Miscugli</span><i>:</i><span>omogenei</span><i>oppure</i><span>eterogenei</span><i>(es.</i><span>emulsioni</span><span>sospensioni</span><i>)</i>
+      </div>
+    </div>
+    <div class="grid" id="defs"></div>
+  </section>
+
+  <section id="view-quiz" hidden>
+    <div class="quiz" id="quiz"></div>
+  </section>
+</main>
+<footer>Legenda colori dei modelli: <b style="color:#e5484d">rosso</b> = ossigeno, <b>bianco</b> = idrogeno, <b style="color:#3a3a3a">nero</b> = carbonio, <b style="color:#3b82f6">blu</b> = azoto, <b style="color:#a855f7">viola</b> = argon; nel miscuglio omogeneo (acqua e sale) <b style="color:#8b7be8">lilla</b> = sodio e <b style="color:#22a565">verde</b> = cloro.</footer>
+
+<script>
+/* ---------- Disegni SVG ---------- */
+const COL={O:'#e5484d',H:'#f7f7f7',C:'#3a3a3a',N:'#3b82f6',Ar:'#a855f7',Na:'#9b8cf0',Cl:'#34c27a'};
+let uid=0;
+function rng(seed){return()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646}}
+const at=(x,y,r,el)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${COL[el]}" stroke="#555" stroke-width="1.2"/><circle cx="${x-r*0.35}" cy="${y-r*0.35}" r="${r*0.28}" fill="#fff" opacity=".45"/>`;
+const water=(x,y,s,rot)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})">${at(-9,8,7,'H')}${at(9,8,7,'H')}${at(0,0,10,'O')}</g>`;
+const diat=(x,y,s,rot,el)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})">${at(-6,0,8,el)}${at(6,0,8,el)}</g>`;
+
+function box(inner,legend=''){
+  return `<svg viewBox="0 0 300 ${legend?240:210}" xmlns="http://www.w3.org/2000/svg" role="img">
+  <rect x="12" y="12" width="276" height="186" rx="10" fill="#fff" stroke="#8a8f98" stroke-width="2.5"/>${inner}${legend}</svg>`;
+}
+function scatter(n,cols,rows,seed,fn,x0=24,y0=24,w=252,h=162){
+  const r=rng(seed);let out='',k=0;const cw=w/cols,ch=h/rows;
+  for(let j=0;j<rows;j++)for(let i=0;i<cols;i++){if(k++>=n)break;
+    const x=x0+cw*(i+.5)+(r()-.5)*cw*.4, y=y0+ch*(j+.5)+(r()-.5)*ch*.4; out+=fn(x,y,r,k);}
+  return out;
+}
+const SVG={
+  atom(){return `<svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" role="img">
+    <g fill="none" stroke="#7b8794" stroke-width="2">
+      <ellipse cx="150" cy="110" rx="120" ry="42"/>
+      <ellipse cx="150" cy="110" rx="120" ry="42" transform="rotate(60 150 110)"/>
+      <ellipse cx="150" cy="110" rx="120" ry="42" transform="rotate(-60 150 110)"/></g>
+    ${[[142,104,'p'],[158,104,'n'],[150,118,'p'],[136,118,'n'],[164,118,'p'],[150,96,'n']].map(([x,y,t])=>`<circle cx="${x}" cy="${y}" r="9" fill="${t=='p'?'#e5484d':'#9aa3ad'}" stroke="#444"/>`).join('')}
+    ${[[0,0],[Math.PI/3,2.2],[-Math.PI/3,4.0]].map(([th,t])=>`<circle cx="${150+120*Math.cos(th)*Math.cos(t)-42*Math.sin(th)*Math.sin(t)}" cy="${110+120*Math.sin(th)*Math.cos(t)+42*Math.cos(th)*Math.sin(t)}" r="7" fill="#3b82f6" stroke="#1e4f9a"/>`).join('')}
+  </svg>`},
+  h2o(){return `<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img">
+    <line x1="150" y1="80" x2="95" y2="135" stroke="#666" stroke-width="8"/><line x1="150" y1="80" x2="205" y2="135" stroke="#666" stroke-width="8"/>
+    ${at(95,135,30,'H')}${at(205,135,30,'H')}${at(150,80,44,'O')}</svg>`},
+  co2(){return `<svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg" role="img">
+    <g stroke="#666" stroke-width="6"><line x1="70" y1="72" x2="230" y2="72"/><line x1="70" y1="88" x2="230" y2="88"/></g>
+    ${at(65,80,38,'O')}${at(150,80,32,'C')}${at(235,80,38,'O')}</svg>`},
+  pure(){return box(scatter(12,4,3,7,(x,y,r)=>water(x,y,1.25,r()*360)))},
+  homog(){return box(scatter(20,5,4,11,(x,y,r,k)=> k%4==1?at(x,y,8,'Na'):k%4==3?at(x,y,10,'Cl'):water(x,y,1,r()*360)))},
+  hetero(){
+    const top=scatter(10,5,2,3,(x,y,r)=>`<circle cx="${x}" cy="${y}" r="11" fill="#f2b84b" stroke="#8a6414"/>`,24,26,252,70);
+    const bot=scatter(15,5,3,5,(x,y,r)=>`<circle cx="${x}" cy="${y}" r="9" fill="#5aa9e6" stroke="#245b85"/>`,24,112,252,82);
+    return box(`<rect x="13" y="13" width="274" height="90" fill="#fff7e3"/><rect x="13" y="103" width="274" height="94" fill="#eaf4fc"/><line x1="13" y1="103" x2="287" y2="103" stroke="#999" stroke-dasharray="6 5" stroke-width="2"/>${top}${bot}`);
+  },
+  air(){
+    const inner=scatter(12,4,3,19,(x,y,r,k)=> k==6?at(x,y,9,'Ar'): (k==3||k==10)?diat(x,y,1,r()*180,'O'):diat(x,y,1,r()*180,'N'));
+    const leg=`<g font-family="Nunito,sans-serif" font-size="13" fill="#333">
+      ${diat(40,222,.8,0,'N')}<text x="56" y="227">azoto N₂</text>
+      ${diat(140,222,.8,0,'O')}<text x="156" y="227">ossigeno O₂</text>
+      ${at(242,222,7,'Ar')}<text x="254" y="227">argon</text></g>`;
+    return box(inner,leg);
+  },
+  glass(liquidCol,content,extra=''){
+    const id='g'+(++uid);
+    return `<svg viewBox="0 0 220 230" xmlns="http://www.w3.org/2000/svg" role="img">
+      <defs><clipPath id="${id}"><path d="M44 62 L56 198 Q57 206 66 206 L154 206 Q163 206 164 198 L176 62 Z"/></clipPath></defs>
+      <g clip-path="url(#${id})"><rect x="0" y="62" width="220" height="160" fill="${liquidCol}"/>${content}</g>
+      <path d="M40 18 L54 200 Q55 210 66 210 L154 210 Q165 210 166 200 L180 18" fill="none" stroke="#6b7280" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M52 30 L62 190" stroke="#fff" stroke-width="5" opacity=".7" stroke-linecap="round"/>${extra}</svg>`;
+  },
+  saltwater(){return SVG.glass('#d6ecfb','',`<g transform="translate(160 6) rotate(28)"><rect x="0" y="0" width="12" height="70" rx="6" fill="#b8bec7"/><ellipse cx="6" cy="78" rx="13" ry="9" fill="#b8bec7"/></g>`)},
+  emulsion(){const r=rng(23);let d='';for(let i=0;i<70;i++){const x=50+r()*125,y=68+r()*136,s=2+r()*6;d+=`<circle cx="${x}" cy="${y}" r="${s}" fill="#f4c430" stroke="#c99a10" stroke-width=".8" opacity=".95"/>`}
+    return SVG.glass('#f3e3c4',d)},
+  suspension(){const r=rng(31);let d='';for(let i=0;i<90;i++){const y=70+Math.pow(r(),.55)*125,x=48+r()*128,s=1.5+r()*3.5;d+=`<circle cx="${x}" cy="${y}" r="${s}" fill="#7a5230" opacity=".85"/>`}
+    d+=`<path d="M40 192 Q80 184 110 190 T180 188 L180 230 L40 230Z" fill="#6b4626"/>`;
+    return SVG.glass('#c9a77f',d)},
+  granite(){const r=rng(41);let d='';const cols=['#1f1f1f','#f2ece4','#d9a1a1','#bfbfbf','#e7c3b5'];
+    for(let i=0;i<160;i++){const x=40+r()*220,y=40+r()*130,s=3+r()*8;d+=`<rect x="${x}" y="${y}" width="${s}" height="${s*.8}" transform="rotate(${r()*90} ${x} ${y})" fill="${cols[i%5]}"/>`}
+    const id='gr'+(++uid);
+    return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img"><defs><clipPath id="${id}"><path d="M40 70 L90 32 L190 28 L262 60 L272 140 L220 182 L110 188 L42 150 Z"/></clipPath></defs>
+      <g clip-path="url(#${id})"><rect width="300" height="210" fill="#c9a8a0"/>${d}</g>
+      <path d="M40 70 L90 32 L190 28 L262 60 L272 140 L220 182 L110 188 L42 150 Z" fill="none" stroke="#555" stroke-width="2.5"/></svg>`}
+};
+
+/* ---------- Definizioni ---------- */
+const DEFS=[
+  {t:'Atomo',tag:'particella',svg:SVG.atom(),d:'La più piccola particella di un elemento chimico che ne conserva le caratteristiche. È formato da un nucleo centrale (protoni e neutroni) e da elettroni che si muovono intorno.',ex:'Esempi: un atomo di ossigeno (O), di carbonio (C), di ferro (Fe).'},
+  {t:'Molecola',tag:'particella',svg:SVG.h2o(),d:'Gruppo di due o più atomi uniti tra loro da legami chimici. È la più piccola parte di una sostanza che ne conserva le proprietà. Gli atomi possono essere uguali o diversi.',ex:'Esempi: ossigeno O₂ (atomi uguali), acqua H₂O, anidride carbonica CO₂ (atomi diversi).'},
+  {t:'Sostanza (pura)',tag:'materia',svg:SVG.pure(),d:'Materiale formato da un solo tipo di particelle, con composizione costante e proprietà ben definite (per esempio una precisa temperatura di fusione e di ebollizione). Può essere un elemento o un composto.',ex:'Esempi: acqua distillata, ossigeno, oro, sale da cucina puro.'},
+  {t:'Miscuglio',tag:'materia',svg:SVG.air(),d:'Unione di due o più sostanze diverse che non reagiscono tra loro: ognuna conserva le proprie proprietà. La composizione può variare e i componenti si possono separare con metodi fisici (filtrazione, evaporazione, decantazione…).',ex:'Esempi: aria, acqua e sale, acqua e sabbia.'},
+  {t:'Miscuglio omogeneo',tag:'miscuglio',svg:SVG.homog(),d:'Miscuglio in cui i componenti non si distinguono, né a occhio nudo né al microscopio: appare uniforme in ogni sua parte (una sola fase). Le soluzioni sono miscugli omogenei.',ex:'Esempi: acqua e sale disciolto, aria, acqua e zucchero, ottone.'},
+  {t:'Miscuglio eterogeneo',tag:'miscuglio',svg:SVG.hetero(),d:'Miscuglio in cui i componenti si distinguono a occhio nudo o al microscopio: non è uniforme e presenta due o più fasi.',ex:'Esempi: granito, acqua e sabbia, acqua e olio, insalata mista.'},
+  {t:'Emulsione',tag:'miscuglio eterogeneo',svg:SVG.emulsion(),d:'Miscuglio eterogeneo di due liquidi che non si mescolano tra loro: uno è disperso nell’altro sotto forma di piccolissime goccioline. Senza un emulsionante, col tempo i due liquidi tendono a separarsi.',ex:'Esempi: latte, maionese, olio e aceto agitati.'},
+  {t:'Sospensione',tag:'miscuglio eterogeneo',svg:SVG.suspension(),d:'Miscuglio eterogeneo in cui particelle solide, che non si sciolgono, sono disperse in un liquido. Lasciando riposare, le particelle si depositano sul fondo (sedimentano).',ex:'Esempi: acqua e terra (acqua fangosa), succo di frutta con polpa, sciroppi da “agitare prima dell’uso”.'}
+];
+document.getElementById('defs').innerHTML=DEFS.map(x=>`<article class="def"><div class="pic">${x.svg}</div><span class="tag">${x.tag}</span><h2>${x.t}</h2><p>${x.d}</p><p class="ex">${x.ex}</p></article>`).join('');
+
+/* ---------- Quiz ---------- */
+const Q=[
+  {img:SVG.atom(),q:'Che cosa rappresenta questo modello?',o:['Un atomo','Una molecola','Un miscuglio','Una sostanza'],a:0,e:'Si vedono un nucleo (protoni e neutroni) ed elettroni che gli girano intorno: è il modello di un atomo.'},
+  {img:SVG.h2o(),q:'Il modello mostra 1 atomo di ossigeno (rosso) legato a 2 atomi di idrogeno (bianchi). Che cos’è?',o:['Una molecola','Un atomo','Un miscuglio omogeneo','Una sospensione'],a:0,e:'Più atomi uniti da legami chimici formano una molecola: questa è la molecola d’acqua, H₂O.'},
+  {img:SVG.co2(),q:'Da quanti atomi è formata questa molecola di anidride carbonica (CO₂)?',o:['3 atomi di 2 elementi diversi','2 atomi dello stesso elemento','3 atomi di 3 elementi diversi','1 solo atomo'],a:0,e:'CO₂ = 1 atomo di carbonio + 2 atomi di ossigeno: 3 atomi in tutto, di 2 elementi diversi.'},
+  {img:SVG.pure(),q:'Osserva le particelle nel recipiente. Che cosa rappresenta il disegno?',o:['Una sostanza pura','Un miscuglio omogeneo','Un miscuglio eterogeneo','Un’emulsione'],a:0,e:'Tutte le particelle sono molecole uguali (H₂O): c’è un solo tipo di particella, quindi è una sostanza pura.'},
+  {img:SVG.air(),q:'Il disegno mostra le particelle dell’aria. Quale affermazione è corretta?',o:['È un miscuglio omogeneo di più sostanze','È una sostanza pura, perché è un gas','È un miscuglio eterogeneo, perché le particelle sono diverse','Contiene un solo tipo di molecola'],a:0,e:'Nell’aria ci sono sostanze diverse (azoto, ossigeno, argon…) distribuite in modo uniforme: è un miscuglio omogeneo.'},
+  {img:SVG.hetero(),q:'Nel recipiente ci sono due tipi di particelle che restano in due zone separate. Che cosa rappresenta?',o:['Un miscuglio eterogeneo','Un miscuglio omogeneo','Una sostanza pura','Una molecola'],a:0,e:'Le due sostanze non si distribuiscono in modo uniforme e formano due fasi distinte: è un miscuglio eterogeneo.'},
+  {img:SVG.saltwater(),q:'In questo bicchiere d’acqua è stato sciolto completamente un cucchiaino di sale: il liquido è limpido e uguale in ogni punto. Che cos’è?',o:['Un miscuglio omogeneo (soluzione)','Una sostanza pura','Una sospensione','Un’emulsione'],a:0,e:'Il sale si scioglie e non si distingue più dall’acqua: è un miscuglio omogeneo, cioè una soluzione. Non è una sostanza pura perché le sostanze sono due.'},
+  {img:SVG.emulsion(),q:'Olio e aceto sono stati agitati energicamente: l’olio forma tante goccioline sparse nel liquido. Come si chiama questo miscuglio?',o:['Emulsione','Sospensione','Soluzione','Sostanza pura'],a:0,e:'Due liquidi che non si mescolano, con uno disperso in goccioline nell’altro, formano un’emulsione. Col tempo olio e aceto si separano di nuovo.'},
+  {img:SVG.suspension(),q:'Acqua e terra sono state mescolate. Dopo un po’ le particelle di terra si depositano sul fondo. Che tipo di miscuglio è?',o:['Una sospensione','Un’emulsione','Un miscuglio omogeneo','Una sostanza pura'],a:0,e:'Particelle solide non disciolte, disperse in un liquido, che col tempo sedimentano: è una sospensione.'},
+  {img:SVG.granite(),q:'Questo è un pezzo di granito: si vedono a occhio nudo granuli di colori diversi. Come lo classifichi?',o:['Miscuglio eterogeneo','Miscuglio omogeneo','Sostanza pura','Emulsione'],a:0,e:'I diversi minerali (quarzo, feldspato, mica) si distinguono a occhio nudo: il granito è un miscuglio eterogeneo.'}
+];
+const L='ABCD';
+let order,i,score,answers;
+function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}
+function start(){order=Q.map(q=>({...q,perm:shuffle([0,1,2,3])}));i=0;score=0;answers=[];render()}
+const box$=document.getElementById('quiz');
+function render(){
+  const q=order[i];
+  box$.innerHTML=`<div class="progress"><div style="width:${i/Q.length*100}%"></div></div>
+   <div class="meta"><span>Domanda ${i+1} di ${Q.length}</span><span>Punti: ${score}</span></div>
+   <div class="qimg">${q.img}</div><p class="qtext">${q.q}</p>
+   <div class="opts">${q.perm.map((p,k)=>`<button class="opt" data-p="${p}"><b>${L[k]}</b><span>${q.o[p]}</span></button>`).join('')}</div>
+   <div class="fb" id="fb"></div>
+   <div class="actions"><button class="btn" id="next" disabled>${i<Q.length-1?'Avanti →':'Vedi il risultato'}</button></div>`;
+  box$.querySelectorAll('.opt').forEach(b=>b.onclick=()=>choose(+b.dataset.p));
+  document.getElementById('next').onclick=()=>{i++; i<Q.length?render():result(); box$.scrollIntoView({behavior:'smooth',block:'start'})};
+}
+function choose(p){
+  const q=order[i],ok=p===q.a; if(ok)score++; answers.push({ok,chosen:q.o[p]});
+  box$.querySelectorAll('.opt').forEach(b=>{b.disabled=true;const v=+b.dataset.p;if(v===q.a)b.classList.add('ok');else if(v===p)b.classList.add('ko')});
+  const fb=document.getElementById('fb');fb.className='fb show '+(ok?'ok':'ko');
+  fb.innerHTML=(ok?'<b>Esatto!</b> ':'<b>Non proprio.</b> La risposta giusta è: <b>'+q.o[q.a]+'</b>. ')+q.e;
+  box$.querySelector('.meta span:last-child').textContent='Punti: '+score;
+  document.getElementById('next').disabled=false;
+}
+function result(){
+  const msg=score>=9?'Ottimo lavoro! 🎉':score>=7?'Bene, ci sei quasi! 👍':score>=5?'Sufficiente: ripassa le definizioni. 📘':'Rileggi le definizioni e riprova. 💪';
+  box$.innerHTML=`<div class="progress"><div style="width:100%"></div></div><div class="result">
+    <p style="margin:0;color:var(--muted);font-weight:700">Risultato</p><div class="score">${score} / ${Q.length}</div><p style="font-weight:700">${msg}</p>
+    <div class="review">${order.map((q,k)=>`<div class="${answers[k].ok?'r-ok':'r-ko'}">${answers[k].ok?'✅':'❌'} <b>${k+1}.</b> ${q.q.split('.').slice(-1)[0].trim()||q.q} — <b>${q.o[q.a]}</b>${answers[k].ok?'':` <span style="color:#7c2d12">(hai risposto: ${answers[k].chosen})</span>`}</div>`).join('')}</div>
+    <button class="btn" id="again">Ricomincia</button> <button class="btn" id="todef" style="background:#5f6670">Ripassa le definizioni</button></div>`;
+  document.getElementById('again').onclick=start;
+  document.getElementById('todef').onclick=()=>show('def');
+}
+/* ---------- Tabs ---------- */
+function show(v){
+  document.getElementById('view-def').hidden=v!=='def';document.getElementById('view-quiz').hidden=v!=='quiz';
+  document.getElementById('tab-def').setAttribute('aria-selected',v==='def');document.getElementById('tab-quiz').setAttribute('aria-selected',v==='quiz');
+  try{history.replaceState(null,'','#'+(v==='quiz'?'quiz':'definizioni'))}catch(e){}
+}
+document.getElementById('tab-def').onclick=()=>show('def');
+document.getElementById('tab-quiz').onclick=()=>show('quiz');
+start();
+if(location.hash==='#quiz')show('quiz');
+window.addEventListener('hashchange',()=>show(location.hash==='#quiz'?'quiz':'def'));
+</script>
+</body>
+</html>

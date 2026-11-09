@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Have got – Clothes &amp; Animals Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#bfe6ff; --sky2:#e9f7ff; --ink:#1f2a44; --ok:#2e9e44; --ko:#e53935;
+    --card:#ffffff; --accent:#ff8a00; --accent2:#7c4dff;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; font-family:'Fredoka',system-ui,sans-serif; color:var(--ink);
+    background:linear-gradient(180deg,var(--sky) 0%,var(--sky2) 60%,#fff8e6 100%);
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:18px 16px 40px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+  h1{font-size:clamp(22px,4vw,32px);margin:0;font-weight:700;letter-spacing:.3px}
+  h1 span{color:var(--accent)}
+  .score{background:#fff;border-radius:999px;padding:6px 14px;font-weight:600;box-shadow:0 3px 0 rgba(0,0,0,.08);white-space:nowrap}
+  .bar{height:14px;background:#ffffffaa;border-radius:999px;overflow:hidden;margin-bottom:16px;box-shadow:inset 0 2px 3px rgba(0,0,0,.08)}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffcc00,var(--accent));border-radius:999px;transition:width .4s}
+  .card{background:var(--card);border-radius:28px;padding:22px 20px 24px;box-shadow:0 8px 0 rgba(31,42,68,.08),0 14px 30px rgba(31,42,68,.08)}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-weight:600;color:#5a6785}
+  .tag{font-size:14px;padding:4px 12px;border-radius:999px;background:#eef3ff;color:#3355cc}
+  .tag.aff{background:#e8f7ec;color:#1f7a33}.tag.neg{background:#fdecec;color:#c62828}.tag.que{background:#eef3ff;color:#3355cc}
+  .no{position:relative;display:inline-flex}
+  .no::after{content:'';position:absolute;inset:2%;pointer-events:none;
+    background:linear-gradient(to top right,transparent 44%,#e53935 44%,#e53935 56%,transparent 56%),
+               linear-gradient(to top left,transparent 44%,#e53935 44%,#e53935 56%,transparent 56%)}
+  .rules{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;text-align:left}
+  .rules div{background:#f7f9ff;border-radius:16px;padding:10px 12px;font-size:16px;line-height:1.5}
+  .rules b{display:block;font-size:17px;margin-bottom:2px}
+  @media (max-width:560px){.rules{grid-template-columns:1fr}}
+  .pic{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+       background:linear-gradient(180deg,#f3fbff,#fffdf3);border-radius:22px;padding:14px;min-height:150px;margin-bottom:14px;border:3px dashed #d6e8f5}
+  .emo{font-size:76px;line-height:1}
+  .emo.big{font-size:110px}
+  .pic svg.cl{width:120px;height:120px}
+  .qrow{display:flex;align-items:center;gap:10px;margin:4px 0 16px}
+  .q{font-size:clamp(20px,3.6vw,26px);font-weight:600;flex:1;margin:0}
+  .speak{border:none;background:#fff3d6;border-radius:50%;width:48px;height:48px;font-size:22px;cursor:pointer;box-shadow:0 3px 0 #f0c76b;flex:none}
+  .speak:active{transform:translateY(2px);box-shadow:0 1px 0 #f0c76b}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .opts.pics{grid-template-columns:repeat(2,1fr)}
+  .opt{border:3px solid #dfe7f5;background:#fff;border-radius:18px;padding:14px 12px;font:inherit;font-size:19px;font-weight:500;color:var(--ink);
+       cursor:pointer;text-align:center;transition:transform .1s,border-color .15s,background .15s;box-shadow:0 4px 0 #dfe7f5;min-height:62px}
+  .opt:hover:not(:disabled){border-color:#9ec2ff;transform:translateY(-2px)}
+  .opt:disabled{cursor:default}
+  .opt .op{display:flex;align-items:center;justify-content:center;gap:4px;min-height:100px}
+  .opt .op .emo{font-size:64px}
+  .opt .op svg.cl{width:92px;height:92px}
+  .opt.ok{border-color:var(--ok);background:#e8f7ec;box-shadow:0 4px 0 #a8dcb4}
+  .opt.ko{border-color:var(--ko);background:#fdecec;box-shadow:0 4px 0 #f3b0ae;animation:shake .35s}
+  .opt.dim{opacity:.55}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .fb{min-height:34px;margin:16px 0 4px;font-size:21px;font-weight:600;text-align:center}
+  .fb.ok{color:var(--ok)} .fb.ko{color:var(--ko)}
+  .nav{display:flex;justify-content:center;margin-top:8px}
+  .btn{border:none;font:inherit;font-weight:600;font-size:20px;padding:12px 30px;border-radius:999px;cursor:pointer;color:#fff;background:var(--accent2);box-shadow:0 5px 0 #5432c4}
+  .btn:active{transform:translateY(3px);box-shadow:0 2px 0 #5432c4}
+  .btn[hidden]{display:none}
+  .btn.alt{background:var(--accent);box-shadow:0 5px 0 #c96a00}
+  .end{text-align:center}
+  .end .stars{font-size:56px;letter-spacing:6px;margin:8px 0}
+  .end .big{font-size:44px;font-weight:700;margin:6px 0}
+  .end p{font-size:20px}
+  .end .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .start{text-align:center}
+  .start .emo{font-size:58px}
+  .start p{font-size:19px;line-height:1.45}
+  .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+  .confetti b{position:absolute;top:-20px;font-size:26px;animation:fall 1.6s linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+  @media (max-width:480px){
+    .opts{grid-template-columns:1fr}
+    .opts.pics{grid-template-columns:1fr 1fr}
+    .emo{font-size:62px} .emo.big{font-size:92px}
+    .pic svg.cl{width:96px;height:96px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🐶 Have got <span>✅❌❓</span> 👕</h1>
+    <div class="score" id="score">⭐ 0</div>
+  </header>
+  <div class="bar"><i id="bar"></i></div>
+  <main class="card" id="app"></main>
+</div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+/* ---------- Clothes drawings (inline SVG) ---------- */
+const COL = {red:'#e53935',blue:'#1e6ff0',green:'#2e9e44',yellow:'#fdd835',pink:'#f48fb1',orange:'#fb8c00',
+             purple:'#8e44ad',black:'#333333',white:'#ffffff',brown:'#8d5524',grey:'#9e9e9e'};
+function svg(item,color){
+  const f = COL[color]||color, s = 'stroke="#2b2b2b" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+  let g='';
+  switch(item){
+    case 'tshirt': g=`<path ${s} fill="${f}" d="M30 16 L42 10 Q50 19 58 10 L70 16 L89 33 L77 46 L70 39 L70 90 L30 90 L30 39 L23 46 L11 33 Z"/>`;break;
+    case 'jumper': g=`<path ${s} fill="${f}" d="M30 14 L42 10 Q50 19 58 10 L70 14 L90 72 L79 76 L70 44 L70 90 L30 90 L30 44 L21 76 L10 72 Z"/><path ${s} fill="none" d="M30 84 L70 84 M42 10 Q50 24 58 10"/>`;break;
+    case 'trousers': g=`<path ${s} fill="${f}" d="M28 8 L72 8 L77 93 L56 93 L50 38 L44 93 L23 93 Z"/><path ${s} fill="none" d="M28 16 L72 16"/>`;break;
+    case 'shorts': g=`<path ${s} fill="${f}" d="M24 26 L76 26 L82 72 L56 74 L50 48 L44 74 L18 72 Z"/><path ${s} fill="none" d="M24 34 L76 34"/>`;break;
+    case 'skirt': g=`<path ${s} fill="${f}" d="M33 22 L67 22 L86 84 L14 84 Z"/><path ${s} fill="none" d="M33 30 L67 30 M42 30 L36 84 M58 30 L64 84"/>`;break;
+    case 'dress': g=`<path ${s} fill="${f}" d="M37 8 L44 8 Q50 17 56 8 L63 8 L65 36 L86 92 L14 92 L35 36 Z"/><path ${s} fill="none" d="M35 38 L65 38"/>`;break;
+    case 'hat': g=`<path ${s} fill="${f}" d="M30 64 L33 30 Q50 20 67 30 L70 64 Z"/><ellipse ${s} fill="${f}" cx="50" cy="66" rx="42" ry="9"/><path ${s} fill="none" d="M32 54 L68 54"/>`;break;
+    case 'cap': g=`<path ${s} fill="${f}" d="M20 62 Q20 28 50 26 Q80 28 80 62 Z"/><path ${s} fill="${f}" d="M72 58 L97 62 L95 70 L72 66 Z"/><circle ${s} fill="${f}" cx="50" cy="25" r="3"/>`;break;
+    case 'coat': g=`<path ${s} fill="${f}" d="M30 10 L42 7 L50 28 L58 7 L70 10 L89 74 L79 77 L71 46 L73 96 L27 96 L29 46 L21 77 L11 74 Z"/><path ${s} fill="none" d="M50 28 L50 96"/><circle cx="56" cy="46" r="2.8" fill="#2b2b2b"/><circle cx="56" cy="62" r="2.8" fill="#2b2b2b"/><circle cx="56" cy="78" r="2.8" fill="#2b2b2b"/>`;break;
+    case 'scarf': g=`<path ${s} fill="${f}" d="M24 22 Q50 34 76 22 L78 36 Q50 48 22 36 Z"/><path ${s} fill="${f}" d="M54 38 L68 36 L72 86 L58 88 Z"/><path ${s} fill="none" d="M58 88 L57 94 M64 87 L64 94 M70 86 L71 93"/>`;break;
+    case 'shoes': {const p=`M6 80 L8 58 L24 58 Q28 68 42 70 Q47 72 46 80 Z`;
+      g=`<path ${s} fill="${f}" d="${p}"/><path ${s} fill="${f}" transform="translate(48,0)" d="${p}"/><path ${s} fill="none" d="M6 80 L46 80 M54 80 L94 80"/>`;}break;
+    case 'boots': {const p=`M10 18 L28 18 L28 66 L42 70 Q48 74 46 86 L10 86 Z`;
+      g=`<path ${s} fill="${f}" d="${p}"/><path ${s} fill="${f}" transform="translate(46,0)" d="${p}"/>`;}break;
+    case 'socks': {const p=`M14 12 L30 12 L30 56 L42 64 Q47 75 38 80 L18 75 Q12 72 14 64 Z`;
+      g=`<path ${s} fill="${f}" d="${p}"/><path ${s} fill="${f}" transform="translate(46,0)" d="${p}"/><path ${s} fill="none" d="M14 20 L30 20 M60 20 L76 20"/>`;}break;
+  }
+  return `<svg class="cl" viewBox="0 0 100 100" aria-hidden="true">${g}</svg>`;
+}
+function part(p){
+  if(typeof p==='string') return `<span class="emo">${p}</span>`;
+  if(Array.isArray(p)) return svg(p[0],p[1]);
+  if(p&&p.no) return `<span class="no">${part(p.no)}</span>`;
+  return '';
+}
+const pic = (...ps)=> `<div class="pic">${ps.map(part).join('')}</div>`;
+const op  = (...ps)=> ({p:`<div class="op">${ps.map(part).join('')}</div>`});
+const no  = p=>({no:p});
+const G='👧', B='👦', I='🙋', Y='👉', T='👫';
+
+/* ---------- 50 questions: first option is the correct one ---------- */
+const A='aff', N='neg', K='que';
+const Q = [
+ // ===== AFFIRMATIVE ✅ =====
+ {t:A, pic:pic(G,'🐶'), q:"What has she got?", o:["She has got a dog.","She have got a dog.","She has got a cat.","She hasn't got a dog."]},
+ {t:A, pic:pic(B,'🐱'), q:"What has he got?", o:["He has got a cat.","He have got a cat.","He has got a dog.","He hasn't got a cat."]},
+ {t:A, pic:pic(I,'🐰'), q:"I ___ got a rabbit.", o:["have","has","am","is"]},
+ {t:A, pic:pic(T,'🐟','🐟'), q:"They ___ got two fish.", o:["have","has","are","is"]},
+ {t:A, pic:pic(G,['dress','yellow']), q:"She ___ got a yellow dress.", o:["has","have","is","are"]},
+ {t:A, pic:pic('🐘'), q:"The elephant ___ got big ears.", o:["has","have","is","are"]},
+ {t:A, pic:pic('🦒'), q:"The giraffe has got a long ___ .", o:["neck","trunk","wing","shell"]},
+ {t:A, pic:pic('🐦'), q:"A bird has got ___ .", o:["wings","a trunk","fins","a shell"]},
+ {t:A, pic:pic(B,['boots','green']), q:"Which sentence is correct?", o:["He has got green boots.","He have got green boots.","He has get green boots.","He got has green boots."]},
+ {t:A, pic:pic('🐵','🍌'), q:"The monkey has got a ___ .", o:["banana","apple","carrot","fish"]},
+ {t:A, pic:pic(T,['cap','red'],['cap','red']), q:"What have we got?", o:["We have got red caps.","We has got red caps.","We have got red hats.","We haven't got red caps."]},
+ {t:A, pic:pic(G,'🐱'), q:"Short form: She has got = ?", o:["She's got","She've got","Shes got","She'got"]},
+ {t:A, pic:pic(I,'🐹'), q:"Short form: I have got = ?", o:["I've got","I's got","Iv got","I'got"]},
+ {t:A, pic:pic(G,'🐱','🐱','🐱'), q:"How many cats has she got?", o:["She has got three cats.","She has got two cats.","She has got four cats.","She have got three cats."]},
+ {t:A, q:"Which picture shows: He has got a parrot?", pics:true, o:[op(B,'🦜'),op(B,'🐢'),op(G,'🦜'),op(B,no('🦜'))]},
+ {t:A, q:"Which picture shows: She has got a blue skirt?", pics:true, o:[op(G,['skirt','blue']),op(G,['skirt','red']),op(G,['dress','blue']),op(B,['shorts','blue'])]},
+ {t:A, pic:pic('🐢'), q:"The tortoise ___ got a shell.", o:["has","have","is","are"]},
+ // ===== NEGATIVE ❌ =====
+ {t:N, pic:pic(B,no('🐶')), q:"What's the right sentence?", o:["He hasn't got a dog.","He has got a dog.","He haven't got a dog.","He isn't got a dog."]},
+ {t:N, pic:pic(I,no('🐍')), q:"I ___ got a snake.", o:["haven't","hasn't","don't","isn't"]},
+ {t:N, pic:pic(G,no(['hat','pink'])), q:"She ___ got a hat.", o:["hasn't","haven't","not","isn't"]},
+ {t:N, pic:pic(T,no('🐴')), q:"They ___ got a horse.", o:["haven't","hasn't","aren't","not"]},
+ {t:N, pic:pic('🐟'), q:"A fish ___ got legs.", o:["hasn't","haven't","isn't","not"]},
+ {t:N, pic:pic('🐍'), q:"A snake hasn't got ___ .", o:["legs","a head","a mouth","a tail"]},
+ {t:N, pic:pic(B,no(['scarf','orange'])), q:"What's the right sentence?", o:["He hasn't got a scarf.","He haven't got a scarf.","He has got a scarf.","He hasn't got a hat."]},
+ {t:N, pic:pic(G,no('🐱')), q:"Make it negative: She has got a cat.", o:["She hasn't got a cat.","She haven't got a cat.","She has not a cat.","She hasn't a got cat."]},
+ {t:N, pic:pic(T,no('🐦')), q:"Make it negative: We have got a bird.", o:["We haven't got a bird.","We hasn't got a bird.","We have got not a bird.","We not have got a bird."]},
+ {t:N, pic:pic('🤔'), q:"Long form: hasn't = ?", o:["has not","have not","is not","does not"]},
+ {t:N, pic:pic('🤔'), q:"Long form: haven't = ?", o:["have not","has not","are not","do not"]},
+ {t:N, pic:pic(G,['tshirt','red']), q:"She has got a red T-shirt. She ___ got a blue T-shirt.", o:["hasn't","haven't","has","isn't"]},
+ {t:N, q:"Which picture shows: She hasn't got a dog?", pics:true, o:[op(G,no('🐶')),op(G,'🐶'),op(B,no('🐶')),op(G,no('🐱'))]},
+ {t:N, pic:pic('🐘'), q:"An elephant hasn't got ___ .", o:["wings","ears","a trunk","legs"]},
+ {t:N, pic:pic(B,['trousers','green']), q:"He has got green trousers. He ___ got shorts.", o:["hasn't","haven't","has","isn't"]},
+ {t:N, pic:pic('🐱'), q:"The cat ___ got wings.", o:["hasn't","haven't","isn't","not"]},
+ // ===== QUESTIONS ❓ =====
+ {t:K, pic:pic(G,'🐶'), q:"___ she got a dog?", o:["Has","Have","Is","Does"]},
+ {t:K, pic:pic(Y,'🐱'), q:"___ you got a cat?", o:["Have","Has","Are","Is"]},
+ {t:K, pic:pic(T,'🐹'), q:"___ they got a hamster?", o:["Have","Has","Are","Is"]},
+ {t:K, pic:pic(G,'🐶'), q:"Has she got a dog?", o:["Yes, she has.","No, she hasn't.","Yes, she have.","Yes, it is."]},
+ {t:K, pic:pic(B,no('🐱')), q:"Has he got a cat?", o:["No, he hasn't.","Yes, he has.","No, he haven't.","No, it isn't."]},
+ {t:K, pic:pic(I,'🐰'), q:"Have you got a rabbit?", o:["Yes, I have.","Yes, I has.","No, I haven't.","Yes, you have."]},
+ {t:K, pic:pic(T,no('🐴')), q:"Have they got a horse?", o:["No, they haven't.","No, they hasn't.","Yes, they have.","No, he hasn't."]},
+ {t:K, pic:pic('🐘'), q:"Has an elephant got a trunk?", o:["Yes, it has.","No, it hasn't.","Yes, it have.","Yes, it is."]},
+ {t:K, pic:pic('🐟'), q:"Has a fish got legs?", o:["No, it hasn't.","Yes, it has.","No, it haven't.","No, it isn't."]},
+ {t:K, pic:pic(G,['tshirt','blue']), q:"Make it a question: She has got a blue T-shirt.", o:["Has she got a blue T-shirt?","She has got a blue T-shirt?","Have she got a blue T-shirt?","Has got she a blue T-shirt?"]},
+ {t:K, pic:pic(T,'🦜'), q:"Make it a question: They have got a parrot.", o:["Have they got a parrot?","Has they got a parrot?","They have got a parrot?","Have got they a parrot?"]},
+ {t:K, pic:pic(B,['jumper','purple']), q:"Has he got a purple jumper?", o:["Yes, he has.","No, he hasn't.","Yes, he have.","Yes, she has."]},
+ {t:K, pic:pic(G,['skirt','pink']), q:"Has she got a green skirt?", o:["No, she hasn't.","Yes, she has.","No, she haven't.","No, he hasn't."]},
+ {t:K, pic:pic(B,['cap','blue']), q:"Put in order: got / Has / a / he / cap / ?", o:["Has he got a cap?","He has got a cap?","Got he has a cap?","Has got he a cap?"]},
+ {t:K, pic:pic('🐸'), q:"___ the frog got a long tongue?", o:["Has","Have","Is","Does"]},
+ {t:K, pic:pic('🦁'), q:"Has the lion got a tail?", o:["Yes, it has.","No, it hasn't.","Yes, it have.","Yes, he is."]},
+ {t:K, pic:pic(G,['shoes','red'],'🐶'), q:"Has she got red shoes and a dog?", o:["Yes, she has.","No, she hasn't.","Yes, she have.","Yes, it is."]},
+];
+
+/* ---------- App ---------- */
+const app=document.getElementById('app'), bar=document.getElementById('bar'), scoreEl=document.getElementById('score');
+let order=[], idx=0, score=0, wrong=[], answered=false;
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+let actx=null;
+function tone(ok){
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    const notes= ok?[523,659,784]:[330,247];
+    notes.forEach((fq,i)=>{const o=actx.createOscillator(),g=actx.createGain();o.type=ok?'triangle':'sawtooth';o.frequency.value=fq;
+      g.gain.setValueAtTime(.0001,actx.currentTime+i*.11);g.gain.exponentialRampToValueAtTime(ok?.18:.08,actx.currentTime+i*.11+.02);
+      g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+i*.11+.22);o.connect(g).connect(actx.destination);o.start(actx.currentTime+i*.11);o.stop(actx.currentTime+i*.11+.25)});
+  }catch(e){}
+}
+function say(text){
+  try{
+    if(!('speechSynthesis' in window))return;
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text.replace(/___/g,'blank').replace(/_ /g,'blank '));
+    u.lang='en-GB'; u.rate=.85;
+    const v=speechSynthesis.getVoices().find(v=>/en-GB/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^en/i.test(v.lang));
+    if(v)u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function confetti(){
+  const box=document.getElementById('confetti'); const set=['⭐','🎉','🐶','👕','🐱','✨'];
+  for(let i=0;i<18;i++){const b=document.createElement('b');b.textContent=set[i%set.length];b.style.left=Math.random()*100+'vw';
+    b.style.animationDelay=(Math.random()*.4)+'s';box.appendChild(b);setTimeout(()=>b.remove(),2200)}
+}
+
+function startScreen(){
+  bar.style.width='0%'; scoreEl.textContent='⭐ 0';
+  app.innerHTML=`<div class="start">
+    <div class="emo">🐶🐱🐰👕👗🧢</div>
+    <h2 style="font-size:28px;margin:10px 0">Hello, children! 👋</h2>
+    <p><b>50 questions</b> about <b>have got</b> with clothes and animals</p>
+    <div class="rules">
+      <div style="background:#e8f7ec"><b>✅ Affirmative</b>I / You / We / They <u>have got</u><br>He / She / It <u>has got</u></div>
+      <div style="background:#fdecec"><b>❌ Negative</b>I / You / We / They <u>haven't got</u><br>He / She / It <u>hasn't got</u></div>
+      <div style="background:#eef3ff"><b>❓ Question</b><u>Have</u> you got…? Yes, I have. / No, I haven't.<br><u>Has</u> she got…? Yes, she has. / No, she hasn't.</div>
+    </div>
+    <p style="font-size:16px;color:#5a6785">Tap 🔊 to listen. Choose the right answer!</p>
+    <div class="row" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px">
+      <button class="btn" id="go">Start! ▶</button>
+      <button class="btn alt" id="mix">Mixed order 🔀</button>
+    </div></div>`;
+  document.getElementById('go').onclick=()=>begin([...Q.keys()]);
+  document.getElementById('mix').onclick=()=>begin(shuffle([...Q.keys()]));
+}
+function begin(list){order=list; idx=0; score=0; wrong=[]; render();}
+
+function render(){
+  answered=false;
+  const n=order.length, q=Q[order[idx]];
+  bar.style.width=(idx/n*100)+'%'; scoreEl.textContent='⭐ '+score;
+  const opts=shuffle(q.o.map((o,i)=>({o,ok:i===0})));
+  app.innerHTML=`
+    <div class="meta"><span>Question ${idx+1} / ${n}</span>
+      <span class="tag ${q.t}">${{aff:'✅ Affirmative',neg:'❌ Negative',que:'❓ Question'}[q.t]}</span></div>
+    ${q.pic||''}
+    <div class="qrow"><p class="q">${q.q}</p><button class="speak" id="spk" aria-label="Listen">🔊</button></div>
+    <div class="opts ${q.pics?'pics':''}" id="opts">
+      ${opts.map((x,i)=>`<button class="opt" data-i="${i}">${typeof x.o==='string'?x.o:x.o.p}</button>`).join('')}
+    </div>
+    <div class="fb" id="fb"></div>
+    <div class="nav"><button class="btn" id="next" hidden>${idx+1<n?'Next ▶':'Finish 🏁'}</button></div>`;
+  document.getElementById('spk').onclick=()=>say(q.q+(q.pics?'':'. '+q.o.filter(s=>typeof s==='string').join(' ... ')));
+  app.querySelectorAll('.opt').forEach(btn=>btn.onclick=()=>choose(btn,opts,q));
+  document.getElementById('next').onclick=()=>{idx++; idx<n?render():finish();};
+}
+
+function choose(btn,opts,q){
+  if(answered)return; answered=true;
+  const i=+btn.dataset.i, ok=opts[i].ok, fb=document.getElementById('fb');
+  app.querySelectorAll('.opt').forEach((b,j)=>{b.disabled=true; if(opts[j].ok)b.classList.add('ok'); else if(j!==i)b.classList.add('dim');});
+  const right=q.o[0], rtxt=typeof right==='string'?right:'';
+  if(ok){score++; fb.className='fb ok'; fb.textContent=['Well done! 🎉','Great job! 🌟','Super! 👏','Fantastic! 🥳','Excellent! ⭐'][Math.floor(Math.random()*5)];
+    tone(true); confetti(); if(rtxt)say(rtxt);}
+  else{btn.classList.add('ko'); wrong.push(order[idx]); fb.className='fb ko';
+    fb.textContent= rtxt?`Oops! The answer is: ${rtxt}`:'Oops! Look at the green one 👀'; tone(false);}
+  scoreEl.textContent='⭐ '+score;
+  const nx=document.getElementById('next'); nx.hidden=false; nx.focus();
+}
+
+function finish(){
+  const n=order.length, pct=score/n;
+  bar.style.width='100%';
+  const stars= pct>=.9?'⭐⭐⭐':pct>=.6?'⭐⭐☆':pct>=.3?'⭐☆☆':'☆☆☆';
+  const msg= pct>=.9?'Amazing! You are a star! 🏆':pct>=.6?'Very good! 👍':pct>=.3?'Good try! Keep practising! 💪':"Let's try again! 😊";
+  app.innerHTML=`<div class="end">
+    <div class="stars">${stars}</div>
+    <div class="big">${score} / ${n}</div>
+    <p>${msg}</p>
+    <div class="row">
+      ${wrong.length?`<button class="btn alt" id="rw">Try my mistakes again (${wrong.length}) 🔁</button>`:''}
+      <button class="btn" id="again">Play again ▶</button>
+    </div></div>`;
+  if(pct>=.6)confetti();
+  const rw=document.getElementById('rw'); if(rw)rw.onclick=()=>begin(shuffle(wrong));
+  document.getElementById('again').onclick=startScreen;
+}
+
+try{speechSynthesis.getVoices()}catch(e){}
+startScreen();
+</script>
+</body>
+</html>

@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Il Drago dei Verbi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Layout: a terrarium stage on top, the verb card, then two columns of tense buttons (simple | compound) */
+:root {
+  --bg: #eef3e4;
+  --surface: #fbfdf6;
+  --ink: #23301d;
+  --muted: #5d6b55;
+  --line: #cdd9bd;
+  --accent: #d9661f;
+  --good: #2f8a3e;
+  --bad: #c2352b;
+  --sand: #e5d9b4;
+  --sky: #dbe9d0;
+  --btn: #ffffff;
+  --btn-hover: #f2f7e9;
+  --font-display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Nunito", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #171d14; --surface: #20281c; --ink: #eaf1df; --muted: #a6b39a; --line: #36432f;
+    --accent: #f08a43; --good: #5cc06b; --bad: #f06b5f; --sand: #3a3524; --sky: #24301f;
+    --btn: #263021; --btn-hover: #2f3b29; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171d14; --surface: #20281c; --ink: #eaf1df; --muted: #a6b39a; --line: #36432f;
+  --accent: #f08a43; --good: #5cc06b; --bad: #f06b5f; --sand: #3a3524; --sky: #24301f;
+  --btn: #263021; --btn-hover: #2f3b29; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 32px;
+}
+.wrap { max-width: 760px; margin: 0 auto; display: grid; gap: 16px; }
+header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 6vw, 40px); line-height: 1; margin: 0; text-wrap: balance; }
+h1 span { color: var(--accent); }
+.sub { color: var(--muted); font-size: 14px; margin: 0; }
+
+.stage { background: linear-gradient(var(--sky) 0 72%, var(--sand) 72%); border: 2px solid var(--line); border-radius: 20px; overflow: hidden; position: relative; }
+.stage svg { display: block; width: 100%; height: auto; max-width: 100%; }
+.meters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.meter { background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 10px 12px; display: grid; gap: 6px; min-width: 0; }
+.meter b { font-family: var(--font-display); font-size: 15px; letter-spacing: .02em; }
+.meter .count { font-variant-numeric: tabular-nums; font-family: var(--font-display); font-size: 22px; line-height: 1; }
+.pips { display: flex; gap: 4px; flex-wrap: wrap; }
+.pip { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); background: transparent; transition: background .3s, border-color .3s; }
+.meter.drago .pip.on { background: var(--good); border-color: var(--good); }
+.meter.vite .pip { background: var(--bad); border-color: var(--bad); }
+.meter.vite .pip.off { background: transparent; border-color: var(--line); }
+
+.card { background: var(--surface); border: 2px solid var(--line); border-radius: 20px; padding: 18px 16px; text-align: center; display: grid; gap: 6px; }
+.tag { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-weight: 800; }
+.form { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 8vw, 46px); line-height: 1.1; }
+.form .pron { color: var(--muted); font-weight: 600; }
+.feedback { min-height: 1.5em; font-weight: 800; }
+.feedback.ok { color: var(--good); }
+.feedback.ko { color: var(--bad); }
+
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.col { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.col h2 { font-family: var(--font-display); font-size: 17px; margin: 0; text-align: center; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.tb {
+  font: 800 16px/1.2 var(--font-body); color: var(--ink); background: var(--btn);
+  border: 2px solid var(--line); border-radius: 14px; padding: 14px 10px; cursor: pointer;
+  transition: transform .12s, background .15s, border-color .15s; min-height: 56px;
+}
+.tb:hover:not(:disabled) { background: var(--btn-hover); border-color: var(--accent); transform: translateY(-2px); }
+.tb:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.tb:disabled { cursor: default; }
+.tb.right { background: var(--good); border-color: var(--good); color: #fff; }
+.tb.wrong { background: var(--bad); border-color: var(--bad); color: #fff; }
+
+.end { position: absolute; inset: 0; display: grid; place-content: center; gap: 10px; text-align: center; padding: 16px; background: color-mix(in srgb, var(--surface) 72%, transparent); }
+.end h3 { font-family: var(--font-display); font-size: clamp(24px, 6vw, 36px); margin: 0; }
+.end button { font: 800 17px var(--font-body); background: var(--accent); color: #fff; border: 0; border-radius: 999px; padding: 12px 24px; cursor: pointer; justify-self: center; }
+.end button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+@keyframes hop { 0%,100% { transform: translateY(0) } 40% { transform: translateY(-14px) } }
+@keyframes shake { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-8px) } 75% { transform: translateX(8px) } }
+@keyframes flick { 0%,100% { transform: scaleX(1) } 50% { transform: scaleX(.8) } }
+.hop { animation: hop .45s ease; }
+.shake { animation: shake .35s ease; }
+#fire path { transform-box: fill-box; transform-origin: left center; animation: flick .25s infinite; }
+@media (prefers-reduced-motion: reduce) { .hop, .shake, #fire path { animation: none; } .tb { transition: none; } }
+
+@media (max-width: 440px) {
+  .tb { font-size: 14px; padding: 12px 6px; }
+  .pip { width: 11px; height: 11px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Il Drago <span>dei Verbi</span></h1>
+    <p class="sub">Essere e avere · modo indicativo</p>
+  </header>
+
+  <div class="stage" id="stage">
+    <svg viewBox="0 0 380 200" role="img" aria-labelledby="crTitle">
+      <title id="crTitle">La lucertola</title>
+      <g id="mover">
+        <g id="creature">
+          <!-- wings (dragon) -->
+          <g id="wings">
+            <path d="M178 100 L140 22 Q160 38 175 30 Q186 48 204 40 Q214 66 204 100 Z" fill="var(--wing)" stroke="var(--skin-dark)" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M160 100 L122 36 Q140 48 152 44 Q160 60 174 56 Q180 78 176 100 Z" fill="var(--wing)" opacity=".7" stroke="var(--skin-dark)" stroke-width="2" stroke-linejoin="round"/>
+          </g>
+          <!-- back legs -->
+          <path d="M150 130 L138 162" stroke="var(--skin-dark)" stroke-width="11" stroke-linecap="round"/>
+          <path d="M212 132 L224 162" stroke="var(--skin-dark)" stroke-width="11" stroke-linecap="round"/>
+          <!-- tail -->
+          <path d="M132 112 Q78 106 46 136 Q28 152 8 148 Q34 156 54 142 Q86 124 132 134 Z" fill="var(--skin)" stroke="var(--skin-dark)" stroke-width="2.5" stroke-linejoin="round"/>
+          <!-- spikes -->
+          <g id="spikes" fill="var(--accent)" stroke="var(--skin-dark)" stroke-width="1.5" stroke-linejoin="round"></g>
+          <!-- body -->
+          <ellipse cx="178" cy="120" rx="62" ry="25" fill="var(--skin)" stroke="var(--skin-dark)" stroke-width="2.5"/>
+          <ellipse cx="180" cy="131" rx="48" ry="11" fill="var(--belly)"/>
+          <!-- dots -->
+          <circle cx="160" cy="110" r="3.5" fill="var(--skin-dark)" opacity=".45"/>
+          <circle cx="185" cy="104" r="3" fill="var(--skin-dark)" opacity=".45"/>
+          <circle cx="205" cy="112" r="3.5" fill="var(--skin-dark)" opacity=".45"/>
+          <!-- front legs -->
+          <path d="M160 134 L150 164" stroke="var(--skin)" stroke-width="12" stroke-linecap="round"/>
+          <path d="M150 164 L140 166 M150 164 L152 168 M150 164 L160 166" stroke="var(--skin-dark)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M218 136 L230 164" stroke="var(--skin)" stroke-width="12" stroke-linecap="round"/>
+          <path d="M230 164 L220 166 M230 164 L232 168 M230 164 L240 166" stroke="var(--skin-dark)" stroke-width="3" stroke-linecap="round"/>
+          <!-- horns -->
+          <g id="horns" fill="var(--horn)" stroke="var(--skin-dark)" stroke-width="1.5" stroke-linejoin="round">
+            <path d="M242 90 L228 64 L252 86 Z"/>
+            <path d="M256 86 L256 58 L266 86 Z"/>
+          </g>
+          <!-- head -->
+          <ellipse cx="252" cy="106" rx="32" ry="21" fill="var(--skin)" stroke="var(--skin-dark)" stroke-width="2.5"/>
+          <ellipse cx="276" cy="112" rx="20" ry="12" fill="var(--skin)" stroke="var(--skin-dark)" stroke-width="2.5"/>
+          <ellipse cx="258" cy="112" rx="26" ry="10" fill="var(--skin)"/>
+          <circle cx="288" cy="107" r="1.8" fill="var(--skin-dark)"/>
+          <path d="M266 118 Q280 121 294 115" fill="none" stroke="var(--skin-dark)" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- eye alive -->
+          <g id="eyeAlive">
+            <circle cx="256" cy="98" r="7" fill="#fff" stroke="var(--skin-dark)" stroke-width="2"/>
+            <circle id="pupil" cx="258" cy="98" r="3.5" fill="#1b1b1b"/>
+            <path id="lid" d="M249 93 Q256 89 263 93" fill="none" stroke="var(--skin-dark)" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+          <g id="eyeDead" stroke="#1b1b1b" stroke-width="3" stroke-linecap="round" hidden>
+            <path d="M251 93 L261 103 M261 93 L251 103"/>
+          </g>
+          <!-- crown of fire -->
+          <g id="fire" hidden>
+            <path d="M296 112 Q330 96 372 104 Q346 110 374 118 Q336 120 296 116 Z" fill="#f2a024"/>
+            <path d="M296 113 Q320 106 346 110 Q330 113 348 117 Q322 118 296 115 Z" fill="#fde26b"/>
+          </g>
+        </g>
+      </g>
+      <path d="M0 170 H380" stroke="var(--line)" stroke-width="2"/>
+    </svg>
+    <div class="end" id="end" hidden>
+      <h3 id="endTitle"></h3>
+      <p id="endText" style="margin:0"></p>
+      <button type="button" id="again">Gioca ancora</button>
+    </div>
+  </div>
+
+  <div class="meters">
+    <div class="meter drago">
+      <b>Al drago mancano</b>
+      <span class="count" id="toDragon">10</span>
+      <div class="pips" id="goodPips"></div>
+    </div>
+    <div class="meter vite">
+      <b>Vite della lucertola</b>
+      <span class="count" id="lives">10</span>
+      <div class="pips" id="lifePips"></div>
+    </div>
+  </div>
+
+  <div class="card" id="card" aria-live="polite">
+    <span class="tag" id="tag">verbo essere</span>
+    <div class="form" id="form">io sono</div>
+    <div class="feedback" id="feedback">Che tempo è? Clicca la risposta giusta.</div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h2>Tempi semplici</h2>
+      <button class="tb" type="button" id="t-pres" data-t="pres">Presente</button>
+      <button class="tb" type="button" id="t-imp" data-t="imp">Imperfetto</button>
+      <button class="tb" type="button" id="t-pr" data-t="pr">Passato remoto</button>
+      <button class="tb" type="button" id="t-fut" data-t="fut">Futuro semplice</button>
+    </div>
+    <div class="col">
+      <h2>Tempi composti</h2>
+      <button class="tb" type="button" id="t-pp" data-t="pp">Passato prossimo</button>
+      <button class="tb" type="button" id="t-tp" data-t="tp">Trapassato prossimo</button>
+      <button class="tb" type="button" id="t-tr" data-t="tr">Trapassato remoto</button>
+      <button class="tb" type="button" id="t-fa" data-t="fa">Futuro anteriore</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const PRON = ["io", "tu", "lui", "noi", "voi", "loro"];
+  const NAMES = { pres: "Presente", imp: "Imperfetto", pr: "Passato remoto", fut: "Futuro semplice",
+    pp: "Passato prossimo", tp: "Trapassato prossimo", tr: "Trapassato remoto", fa: "Futuro anteriore" };
+  const SIMPLE = {
+    essere: {
+      pres: ["sono", "sei", "è", "siamo", "siete", "sono"],
+      imp: ["ero", "eri", "era", "eravamo", "eravate", "erano"],
+      pr: ["fui", "fosti", "fu", "fummo", "foste", "furono"],
+      fut: ["sarò", "sarai", "sarà", "saremo", "sarete", "saranno"]
+    },
+    avere: {
+      pres: ["ho", "hai", "ha", "abbiamo", "avete", "hanno"],
+      imp: ["avevo", "avevi", "aveva", "avevamo", "avevate", "avevano"],
+      pr: ["ebbi", "avesti", "ebbe", "avemmo", "aveste", "ebbero"],
+      fut: ["avrò", "avrai", "avrà", "avremo", "avrete", "avranno"]
+    }
+  };
+  const AUX = { pp: "pres", tp: "imp", tr: "pr", fa: "fut" };
+  const TENSES = Object.keys(NAMES);
+  const GOAL = 10;
+
+  function conj(verb, t, p) {
+    if (SIMPLE[verb][t]) return SIMPLE[verb][t][p];
+    const aux = SIMPLE[verb][AUX[t]][p];
+    const part = verb === "avere" ? "avuto" : (p < 3 ? "stato" : "stati");
+    return aux + " " + part;
+  }
+
+  const $ = id => document.getElementById(id);
+  const btns = [...document.querySelectorAll(".tb")];
+  let good = 0, bad = 0, current = null, lastKey = "", busy = false, over = false;
+
+  // pips
+  for (let i = 0; i < GOAL; i++) {
+    $("goodPips").appendChild(Object.assign(document.createElement("span"), { className: "pip" }));
+    $("lifePips").appendChild(Object.assign(document.createElement("span"), { className: "pip" }));
+  }
+  // spikes along the back
+  const NS = "http://www.w3.org/2000/svg";
+  for (let i = 0; i < GOAL; i++) {
+    const x = 128 + i * 11;
+    const y = 120 - 25 * Math.sqrt(Math.max(0, 1 - ((x - 178) / 62) ** 2)) + 3;
+    const s = document.createElementNS(NS, "path");
+    s.setAttribute("d", `M${x - 6} ${y} L${x} ${y - 16} L${x + 6} ${y} Z`);
+    s.style.opacity = 0; s.style.transition = "opacity .4s";
+    $("spikes").appendChild(s);
+  }
+
+  function paint() {
+    const p = good / GOAL;
+    const dead = bad >= GOAL;
+    const root = document.documentElement.style;
+    if (dead) {
+      root.setProperty("--skin", "#9aa093"); root.setProperty("--skin-dark", "#5d6158");
+      root.setProperty("--belly", "#c3c7bd"); root.setProperty("--wing", "#7f857a"); root.setProperty("--horn", "#d7d2c4");
+    } else {
+      const h = 108 - 108 * p;            // green to red
+      const s = 45 + 25 * p;
+      root.setProperty("--skin", `hsl(${h} ${s}% 46%)`);
+      root.setProperty("--skin-dark", `hsl(${h} ${s}% 24%)`);
+      root.setProperty("--belly", `hsl(${h + 30} ${s}% 76%)`);
+      root.setProperty("--wing", `hsl(${280 - 20 * p} 40% 42%)`);
+      root.setProperty("--horn", "#f4e6c1");
+    }
+    // growth
+    const sc = 0.82 + 0.3 * p;
+    $("creature").setAttribute("transform", dead
+      ? "rotate(180 190 128) translate(0 -14)"
+      : `translate(190 168) scale(${sc}) translate(-190 -168)`);
+    const ws = good < 3 ? 0 : (good - 2) / 8;
+    $("wings").setAttribute("transform", `translate(180 100) scale(${ws}) translate(-180 -100)`);
+    $("horns").style.opacity = good >= 5 ? Math.min(1, (good - 4) / 4) : 0;
+    [...$("spikes").children].forEach((s, i) => s.style.opacity = i < good ? 1 : 0);
+    $("fire").hidden = good < GOAL;
+    $("eyeAlive").hidden = dead; $("eyeDead").hidden = !dead;
+    // sleepy lid as lives drop
+    const droop = Math.min(bad, 9) * 0.7;
+    $("lid").setAttribute("d", `M249 ${93 + droop} Q256 ${89 + droop} 263 ${93 + droop}`);
+    $("pupil").setAttribute("cy", 98 + droop * 0.3);
+
+    $("toDragon").textContent = GOAL - good;
+    $("lives").textContent = GOAL - bad;
+    [...$("goodPips").children].forEach((d, i) => d.classList.toggle("on", i < good));
+    [...$("lifePips").children].forEach((d, i) => d.classList.toggle("off", i >= GOAL - bad));
+    $("crTitle").textContent = dead ? "La lucertola è morta" : good >= GOAL ? "Il drago" : "La lucertola";
+  }
+
+  function next() {
+    let q;
+    do {
+      const verb = Math.random() < 0.5 ? "essere" : "avere";
+      const t = TENSES[Math.floor(Math.random() * TENSES.length)];
+      const p = Math.floor(Math.random() * 6);
+      q = { verb, t, p, key: verb + t + p };
+    } while (q.key === lastKey || (current && q.t === current.t && Math.random() < 0.6));
+    lastKey = q.key; current = q;
+    $("tag").textContent = "verbo " + q.verb;
+    $("form").innerHTML = `<span class="pron">${PRON[q.p]}</span> ${conj(q.verb, q.t, q.p)}`;
+    $("feedback").className = "feedback";
+    $("feedback").textContent = "Che tempo è? Clicca la risposta giusta.";
+    btns.forEach(b => { b.disabled = false; b.classList.remove("right", "wrong"); });
+    busy = false;
+  }
+
+  function bump(cls) {
+    const m = $("mover");
+    m.classList.remove("hop", "shake"); void m.getBoundingClientRect(); m.classList.add(cls);
+  }
+
+  function answer(t, btn) {
+    if (busy || over) return;
+    busy = true;
+    btns.forEach(b => b.disabled = true);
+    const ok = t === current.t;
+    const right = btns.find(b => b.dataset.t === current.t);
+    right.classList.add("right");
+    if (ok) {
+      good++;
+      $("feedback").className = "feedback ok";
+      $("feedback").textContent = ["Bravo!", "Esatto!", "Giusto!", "Perfetto!"][good % 4] + " È " + NAMES[current.t].toLowerCase() + ".";
+      bump("hop");
+    } else {
+      bad++;
+      btn.classList.add("wrong");
+      $("feedback").className = "feedback ko";
+      $("feedback").textContent = "No, è " + NAMES[current.t].toLowerCase() + ".";
+      bump("shake");
+    }
+    paint();
+    if (good >= GOAL) return finish(true);
+    if (bad >= GOAL) return finish(false);
+    setTimeout(next, ok ? 1000 : 2400);
+  }
+
+  function finish(won) {
+    over = true;
+    setTimeout(() => {
+      $("endTitle").textContent = won ? "Sei diventato un drago!" : "Oh no, la lucertola è morta…";
+      $("endText").textContent = won
+        ? `10 risposte giuste con ${bad} ${bad === 1 ? "errore" : "errori"}.`
+        : `Hai fatto ${good} ${good === 1 ? "risposta giusta" : "risposte giuste"}. Riprova!`;
+      $("end").hidden = false;
+      $("again").focus();
+    }, 900);
+  }
+
+  function reset() {
+    good = 0; bad = 0; over = false; current = null;
+    $("end").hidden = true;
+    paint(); next();
+  }
+
+  btns.forEach(b => b.addEventListener("click", () => answer(b.dataset.t, b)));
+  $("again").addEventListener("click", reset);
+  reset();
+})();
+</script>
+
+</body>
+</html>
