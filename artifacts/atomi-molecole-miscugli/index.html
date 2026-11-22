@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Atomi, molecole e miscugli</title>
+<title>La materia</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -16,14 +16,18 @@
   header{padding:32px 20px 8px;max-width:980px;margin:0 auto}
   h1{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 4px;font-weight:800;letter-spacing:-.01em}
   header p{margin:0;color:var(--muted)}
-  nav{max-width:980px;margin:18px auto 0;padding:0 20px;display:flex;gap:8px}
+  nav{max-width:980px;margin:18px auto 0;padding:0 20px;display:flex;gap:8px;flex-wrap:wrap}
   nav button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:10px 18px;border-radius:999px;cursor:pointer}
   nav button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
   main{max-width:980px;margin:0 auto;padding:20px}
+  .sec{margin:30px 0 12px;font-size:1.35rem;font-weight:800}
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
   .def{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:8px}
   .def .pic{background:#fbfaf7;border-radius:12px;height:150px;display:flex;align-items:center;justify-content:center}
   .def .pic svg{height:140px;width:auto;max-width:100%}
+  .def.wide{grid-column:1/-1}
+  .def.wide .pic{height:auto;padding:12px;gap:20px;flex-wrap:wrap}
+  .def.wide .pic svg{height:210px}
   .def h2{margin:4px 0 0;font-size:1.25rem}
   .def p{margin:0}
   .def .ex{color:var(--muted);font-size:.95rem}
@@ -31,6 +35,7 @@
   .scheme{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
   .scheme h2{margin:0 0 10px;font-size:1.1rem}
   .tree{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-weight:700}
+  .tree+.tree{margin-top:10px}
   .tree span{background:#f1efe9;padding:4px 10px;border-radius:8px}
   .tree i{font-style:normal;color:var(--muted)}
   /* quiz */
@@ -53,7 +58,7 @@
   .fb.ok{background:var(--ok-soft);color:#14532d}
   .fb.ko{background:var(--ko-soft);color:#7c2d12}
   .actions{display:flex;justify-content:flex-end;margin-top:16px}
-  .btn{font:inherit;font-weight:800;background:var(--accent);color:#fff;border:0;padding:12px 22px;border-radius:12px;cursor:pointer}
+  .btn{font:inherit;font-weight:800;background:var(--accent);color:#fff;border:0;padding:12px 22px;border-radius:12px;cursor:pointer;margin:4px 2px}
   .btn:disabled{opacity:.35;cursor:default}
   .result{text-align:center}
   .result .score{font-size:3rem;font-weight:800;margin:6px 0}
@@ -66,12 +71,12 @@
 </head>
 <body>
 <header>
-  <h1>Atomi, molecole e miscugli</h1>
-  <p>Studia le definizioni, poi mettiti alla prova con il quiz illustrato.</p>
+  <h1>La materia</h1>
+  <p>Atomi e molecole, miscugli, stati della materia, calore e temperatura, passaggi di stato: studia le definizioni, poi mettiti alla prova con il quiz illustrato.</p>
 </header>
 <nav role="tablist">
   <button role="tab" id="tab-def" aria-selected="true">📘 Definizioni</button>
-  <button role="tab" id="tab-quiz" aria-selected="false">✏️ Quiz (10 domande)</button>
+  <button role="tab" id="tab-quiz" aria-selected="false">✏️ Quiz (50 domande)</button>
 </nav>
 
 <main>
@@ -79,30 +84,48 @@
     <div class="scheme">
       <h2>Lo schema in breve</h2>
       <div class="tree">
-        <span>Atomi</span><i>→ si uniscono in</i><span>Molecole</span><i>→ formano</i><span>Sostanze pure</span><i>→ mescolate formano</i><span>Miscugli</span><i>:</i><span>omogenei</span><i>oppure</i><span>eterogenei</span><i>(es.</i><span>emulsioni</span><span>sospensioni</span><i>)</i>
+        <span>Materia</span><i>è formata da</i><span>Atomi</span><i>→ si uniscono in</i><span>Molecole</span><i>→ formano</i><span>Sostanze pure</span><i>→ mescolate formano</i><span>Miscugli</span><i>:</i><span>omogenei</span><i>oppure</i><span>eterogenei</span><i>(es.</i><span>emulsioni</span><span>sospensioni</span><i>)</i>
+      </div>
+      <div class="tree">
+        <span>Corpo più caldo</span><i>→ calore →</i><span>Corpo più freddo</span><i>fino a raggiungere la</i><span>stessa temperatura</span><i>(si misura con il</i><span>termometro</span><i>)</i>
+      </div>
+      <div class="tree">
+        <span>Solido</span><i>→ fusione →</i><span>Liquido</span><i>→ vaporizzazione →</i><span>Aeriforme</span><i>(assorbono calore)</i>
+      </div>
+      <div class="tree">
+        <span>Aeriforme</span><i>→ condensazione →</i><span>Liquido</span><i>→ solidificazione →</i><span>Solido</span><i>(cedono calore)</i>
       </div>
     </div>
-    <div class="grid" id="defs"></div>
+    <div id="defs"></div>
   </section>
 
   <section id="view-quiz" hidden>
     <div class="quiz" id="quiz"></div>
   </section>
 </main>
-<footer>Legenda colori dei modelli: <b style="color:#e5484d">rosso</b> = ossigeno, <b>bianco</b> = idrogeno, <b style="color:#3a3a3a">nero</b> = carbonio, <b style="color:#3b82f6">blu</b> = azoto, <b style="color:#a855f7">viola</b> = argon; nel miscuglio omogeneo (acqua e sale) <b style="color:#8b7be8">lilla</b> = sodio e <b style="color:#22a565">verde</b> = cloro.</footer>
+<footer>Legenda colori dei modelli: <b style="color:#e5484d">rosso</b> = ossigeno, <b>bianco</b> = idrogeno, <b style="color:#3a3a3a">nero</b> = carbonio, <b style="color:#3b82f6">blu</b> = azoto, <b style="color:#a855f7">viola</b> = argon; nel miscuglio omogeneo (acqua e sale) <b style="color:#8b7be8">lilla</b> = sodio e <b style="color:#22a565">verde</b> = cloro; negli stati della materia <b style="color:#4f8fd0">azzurro</b> = una particella qualsiasi.</footer>
 
 <script>
 /* ---------- Disegni SVG ---------- */
-const COL={O:'#e5484d',H:'#f7f7f7',C:'#3a3a3a',N:'#3b82f6',Ar:'#a855f7',Na:'#9b8cf0',Cl:'#34c27a'};
+const COL={O:'#e5484d',H:'#f7f7f7',C:'#3a3a3a',N:'#3b82f6',Ar:'#a855f7',Na:'#9b8cf0',Cl:'#34c27a',P:'#7fb2e5'};
+const FONT='font-family="Nunito,sans-serif"';
 let uid=0;
 function rng(seed){return()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646}}
 const at=(x,y,r,el)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${COL[el]}" stroke="#555" stroke-width="1.2"/><circle cx="${x-r*0.35}" cy="${y-r*0.35}" r="${r*0.28}" fill="#fff" opacity=".45"/>`;
+const P=(x,y,r=11)=>at(x,y,r,'P');
 const water=(x,y,s,rot)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})">${at(-9,8,7,'H')}${at(9,8,7,'H')}${at(0,0,10,'O')}</g>`;
 const diat=(x,y,s,rot,el)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})">${at(-6,0,8,el)}${at(6,0,8,el)}</g>`;
+const trail=(x,y,a,L,triple)=>{const c=Math.cos(a),s=Math.sin(a);let o=`<line x1="${x-c*14}" y1="${y-s*14}" x2="${x-c*(14+L)}" y2="${y-s*(14+L)}"/>`;
+  if(triple)o+=`<line x1="${x-c*13-s*6}" y1="${y-s*13+c*6}" x2="${x-c*(8+L)-s*6}" y2="${y-s*(8+L)+c*6}"/><line x1="${x-c*13+s*6}" y1="${y-s*13-c*6}" x2="${x-c*(8+L)+s*6}" y2="${y-s*(8+L)-c*6}"/>`;
+  return `<g stroke="#8fb3d6" stroke-width="2" stroke-linecap="round">${o}</g>`};
+const arrowMarker=(id,col)=>`<marker id="${id}" viewBox="0 0 10 10" refX="8" refY="5" markerUnits="userSpaceOnUse" markerWidth="13" markerHeight="13" orient="auto"><path d="M0 0L10 5L0 10z" fill="${col}"/></marker>`;
 
 function box(inner,legend=''){
+  const id='bx'+(++uid);
   return `<svg viewBox="0 0 300 ${legend?240:210}" xmlns="http://www.w3.org/2000/svg" role="img">
-  <rect x="12" y="12" width="276" height="186" rx="10" fill="#fff" stroke="#8a8f98" stroke-width="2.5"/>${inner}${legend}</svg>`;
+  <defs><clipPath id="${id}"><rect x="12" y="12" width="276" height="186" rx="10"/></clipPath></defs>
+  <rect x="12" y="12" width="276" height="186" rx="10" fill="#fff"/><g clip-path="url(#${id})">${inner}</g>
+  <rect x="12" y="12" width="276" height="186" rx="10" fill="none" stroke="#8a8f98" stroke-width="2.5"/>${legend}</svg>`;
 }
 function scatter(n,cols,rows,seed,fn,x0=24,y0=24,w=252,h=162){
   const r=rng(seed);let out='',k=0;const cw=w/cols,ch=h/rows;
@@ -125,6 +148,7 @@ const SVG={
   co2(){return `<svg viewBox="0 0 300 160" xmlns="http://www.w3.org/2000/svg" role="img">
     <g stroke="#666" stroke-width="6"><line x1="70" y1="72" x2="230" y2="72"/><line x1="70" y1="88" x2="230" y2="88"/></g>
     ${at(65,80,38,'O')}${at(150,80,32,'C')}${at(235,80,38,'O')}</svg>`},
+  o2(){return `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" role="img">${at(118,90,42,'O')}${at(182,90,42,'O')}</svg>`},
   pure(){return box(scatter(12,4,3,7,(x,y,r)=>water(x,y,1.25,r()*360)))},
   homog(){return box(scatter(20,5,4,11,(x,y,r,k)=> k%4==1?at(x,y,8,'Na'):k%4==3?at(x,y,10,'Cl'):water(x,y,1,r()*360)))},
   hetero(){
@@ -134,7 +158,7 @@ const SVG={
   },
   air(){
     const inner=scatter(12,4,3,19,(x,y,r,k)=> k==6?at(x,y,9,'Ar'): (k==3||k==10)?diat(x,y,1,r()*180,'O'):diat(x,y,1,r()*180,'N'));
-    const leg=`<g font-family="Nunito,sans-serif" font-size="13" fill="#333">
+    const leg=`<g ${FONT} font-size="13" fill="#333">
       ${diat(40,222,.8,0,'N')}<text x="56" y="227">azoto N₂</text>
       ${diat(140,222,.8,0,'O')}<text x="156" y="227">ossigeno O₂</text>
       ${at(242,222,7,'Ar')}<text x="254" y="227">argon</text></g>`;
@@ -159,50 +183,273 @@ const SVG={
     const id='gr'+(++uid);
     return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img"><defs><clipPath id="${id}"><path d="M40 70 L90 32 L190 28 L262 60 L272 140 L220 182 L110 188 L42 150 Z"/></clipPath></defs>
       <g clip-path="url(#${id})"><rect width="300" height="210" fill="#c9a8a0"/>${d}</g>
-      <path d="M40 70 L90 32 L190 28 L262 60 L272 140 L220 182 L110 188 L42 150 Z" fill="none" stroke="#555" stroke-width="2.5"/></svg>`}
+      <path d="M40 70 L90 32 L190 28 L262 60 L272 140 L220 182 L110 188 L42 150 Z" fill="none" stroke="#555" stroke-width="2.5"/></svg>`},
+
+  /* --- materia --- */
+  matter(){return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img">
+    <path d="M22 162 L30 128 L52 112 L82 116 L98 138 L94 162 Z" fill="#9aa3ad" stroke="#555" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M30 128 L52 140 L82 116 M52 140 L58 162" stroke="#7b8490" fill="none" stroke-width="1.5"/>
+    <path d="M128 112 L134 168 L176 168 L182 112 Z" fill="#9cc9ef"/>
+    <path d="M126 92 L134 168 L176 168 L184 92" fill="none" stroke="#6b7280" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="245" cy="88" rx="34" ry="42" fill="#f57c8a" stroke="#b5404f" stroke-width="2"/>
+    <ellipse cx="233" cy="72" rx="8" ry="13" fill="#fff" opacity=".4"/>
+    <path d="M240 136 L250 136 L245 129 Z" fill="#b5404f"/>
+    <path d="M245 136 q-8 13 0 25 q8 12 0 24" fill="none" stroke="#555" stroke-width="1.5"/>
+    <g ${FONT} font-size="14" font-weight="700" fill="#333" text-anchor="middle"><text x="60" y="198">sasso</text><text x="155" y="198">acqua</text><text x="245" y="205">aria</text></g></svg>`},
+  balance(){return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img">
+    <rect x="110" y="190" width="80" height="10" rx="3" fill="#8a8f98"/><rect x="146" y="60" width="8" height="132" fill="#8a8f98"/>
+    <g stroke="#8a8f98" stroke-width="1.5"><line x1="60" y1="72" x2="32" y2="140"/><line x1="60" y1="72" x2="88" y2="140"/><line x1="240" y1="48" x2="212" y2="116"/><line x1="240" y1="48" x2="268" y2="116"/></g>
+    <line x1="55" y1="72.7" x2="245" y2="47.3" stroke="#5d6670" stroke-width="6" stroke-linecap="round"/><circle cx="150" cy="60" r="7" fill="#5d6670"/>
+    <path d="M28 140 Q60 158 92 140 Z" fill="#c4cad1" stroke="#8a8f98"/><path d="M208 116 Q240 134 272 116 Z" fill="#c4cad1" stroke="#8a8f98"/>
+    <ellipse cx="60" cy="111" rx="22" ry="27" fill="#f57c8a" stroke="#b5404f" stroke-width="2"/><ellipse cx="52" cy="101" rx="5" ry="9" fill="#fff" opacity=".4"/>
+    <path d="M228 114 q4 -10 12 -8 q10 -2 12 6 q-6 4 -12 2 q-6 3 -12 0z" fill="#f57c8a" stroke="#b5404f" stroke-width="1.5"/>
+    <g ${FONT} font-size="14" font-weight="700" fill="#333" text-anchor="middle"><text x="60" y="176">gonfio</text><text x="240" y="152">sgonfio</text></g></svg>`},
+  bulb(){const rays=[-180,-150,-120,-90,-60,-30,0].map(d=>{const a=d*Math.PI/180;return `<line x1="${150+58*Math.cos(a)}" y1="${85+58*Math.sin(a)}" x2="${150+78*Math.cos(a)}" y2="${85+78*Math.sin(a)}"/>`}).join('');
+    return `<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img">
+    <g stroke="#f6c344" stroke-width="5" stroke-linecap="round">${rays}</g>
+    <path d="M128 118 L134 145 L166 145 L172 118 Z" fill="#fff3bf" stroke="#d9a400" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="150" cy="85" r="45" fill="#fff3bf" stroke="#d9a400" stroke-width="2.5"/>
+    <path d="M136 96 q7 -14 14 0 q7 -14 14 0" fill="none" stroke="#d9480f" stroke-width="3"/>
+    <rect x="132" y="145" width="36" height="30" rx="4" fill="#9aa3ad" stroke="#5d6670" stroke-width="2"/>
+    <path d="M132 155 h36 M132 165 h36" stroke="#5d6670" stroke-width="2"/><path d="M142 175 L150 187 L158 175 Z" fill="#5d6670"/></svg>`},
+
+  /* --- stati della materia --- */
+  solid(){let p='',arcs='';for(let j=0;j<5;j++)for(let i=0;i<9;i++){const x=54+i*24,y=182-j*24;p+=P(x,y,11);if(j===4&&i%2===0)arcs+=`<path d="M${x-7} ${y-16} q7 -5 14 0" />`}
+    return box(`<g fill="none" stroke="#5b7fa6" stroke-width="1.6" stroke-linecap="round">${arcs}</g>${p}`)},
+  liquid(){const r=rng(29);let p='';for(let j=0;j<4;j++)for(let k=0;k<10;k++){const x=30+k*25+(j%2)*12+(r()-.5)*6,y=182-j*23+(r()-.5)*6;p+=P(x,y,11)}
+    return box(`<rect x="12" y="98" width="276" height="100" fill="#eaf4fc"/><line x1="12" y1="98" x2="288" y2="98" stroke="#9cc9ef" stroke-width="2"/>${p}`)},
+  gas(){return box(scatter(9,3,3,13,(x,y,r)=>trail(x,y,r()*Math.PI*2,20,true)+P(x,y,11)))},
+  liquidShapes(){const W='#9cc9ef',S='fill="none" stroke="#6b7280" stroke-width="3" stroke-linejoin="round"';
+    return `<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img">
+    <path d="M29.6 110 L35 180 L75 180 L80.4 110 Z" fill="${W}"/><path d="M25 50 L35 180 L75 180 L85 50" ${S}/>
+    <path d="M126 120 h48 v52 q0 6 -6 6 h-36 q-6 0 -6 -6 z" fill="${W}"/><path d="M140 40 h20 v30 q15 6 15 20 v82 q0 8 -8 8 h-34 q-8 0 -8 -8 v-82 q0 -14 15 -20 z" ${S}/>
+    <path d="M209 148 Q215 179 247 179 Q279 179 285 148 Z" fill="${W}"/><path d="M205 120 Q208 182 247 182 Q286 182 289 120" ${S}/></svg>`},
+  syringes(){
+    const syr=(y,lab,px,inner)=>`<text x="40" y="${y-8}" ${FONT} font-size="14" font-weight="700" fill="#333">${lab}</text>
+      <rect x="40" y="${y}" width="190" height="40" rx="5" fill="#f4f8fb" stroke="#6b7280" stroke-width="2.5"/>${inner}
+      <rect x="230" y="${y+14}" width="22" height="12" rx="2" fill="#6b7280"/>
+      <rect x="6" y="${y+16}" width="${px-6}" height="8" fill="#9aa3ad"/><rect x="2" y="${y+5}" width="8" height="30" rx="2" fill="#5d6670"/><rect x="${px}" y="${y+3}" width="8" height="34" rx="2" fill="#5d6670"/>`;
+    const air=[[130,46],[160,62],[192,44],[215,64],[145,66],[205,50]].map(([x,y])=>P(x,y,6)).join('');
+    let wat='';for(let k=0;k<11;k++){wat+=P(76+k*14.5,137,7)+P(83+k*14.5,151,7)}
+    return `<svg viewBox="0 0 300 175" xmlns="http://www.w3.org/2000/svg" role="img">${syr(30,'aria',112,air)}${syr(124,'acqua',60,wat)}</svg>`},
+
+  /* --- calore e temperatura --- */
+  heat(la,ta,lb,tb,arrow=true){const id='hm'+(++uid);
+    return `<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img"><defs>${arrowMarker(id,'#d9480f')}</defs>
+    <rect x="40" y="50" width="110" height="90" rx="8" fill="#f6a58c" stroke="#b5462b" stroke-width="2"/>
+    <rect x="150" y="50" width="110" height="90" rx="8" fill="#a9d3f2" stroke="#2f6f9e" stroke-width="2"/>
+    <g ${FONT} text-anchor="middle" font-weight="800"><text x="95" y="38" font-size="14" fill="#333">${la}</text><text x="205" y="38" font-size="14" fill="#333">${lb}</text>
+    <text x="95" y="103" font-size="22" fill="#7a1f0e">${ta}</text><text x="205" y="103" font-size="22" fill="#163f5e">${tb}</text>
+    ${arrow?`<text x="150" y="192" font-size="15" fill="#d9480f">calore</text>`:''}</g>
+    ${arrow?`<line x1="70" y1="165" x2="228" y2="165" stroke="#d9480f" stroke-width="4" marker-end="url(#${id})"/>`:''}</svg>`},
+  tempP(){const r=rng(57);
+    const side=(x0,fast,lab)=>{const id='tp'+(++uid);let t='',p='';
+      for(let k=0;k<9;k++){const x=x0+22+(k%3)*42+(r()-.5)*12,y=60+Math.floor(k/3)*48+(r()-.5)*12;t+=trail(x,y,r()*Math.PI*2,fast?24:7,fast);p+=P(x,y,10)}
+      return `<defs><clipPath id="${id}"><rect x="${x0}" y="30" width="128" height="160" rx="10"/></clipPath></defs>
+      <rect x="${x0}" y="30" width="128" height="160" rx="10" fill="#fff"/><g clip-path="url(#${id})">${t}${p}</g>
+      <rect x="${x0}" y="30" width="128" height="160" rx="10" fill="none" stroke="#8a8f98" stroke-width="2.5"/>
+      <text x="${x0+64}" y="22" text-anchor="middle" ${FONT} font-weight="800" font-size="16" fill="#333">${lab}</text>`};
+    return `<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img">${side(14,false,'A')}${side(158,true,'B')}</svg>`},
+  pots(){const steam=(x,y,h)=>`<path d="M${x} ${y} q6 -${h/4} 0 -${h/2} q-6 -${h/4} 0 -${h/2}" fill="none" stroke="#9aa3ad" stroke-width="3" stroke-linecap="round"/>`;
+    return `<svg viewBox="0 0 300 205" xmlns="http://www.w3.org/2000/svg" role="img">
+    ${steam(70,72,40)}${steam(100,72,40)}${steam(130,72,40)}${steam(232,128,24)}${steam(248,128,24)}
+    <rect x="5" y="96" width="22" height="10" rx="4" fill="#5d6670"/><rect x="173" y="96" width="22" height="10" rx="4" fill="#5d6670"/>
+    <rect x="25" y="85" width="150" height="90" rx="10" fill="#a7b0ba" stroke="#5d6670" stroke-width="2"/><rect x="18" y="78" width="164" height="12" rx="4" fill="#8a939d"/>
+    <path d="M265 145 q18 0 18 12 q0 12 -18 12" fill="none" stroke="#6b7280" stroke-width="4"/>
+    <ellipse cx="240" cy="177" rx="36" ry="5" fill="#d7dbe0"/><rect x="215" y="135" width="50" height="40" rx="6" fill="#fff" stroke="#6b7280" stroke-width="2"/>
+    <g ${FONT} font-weight="800" text-anchor="middle"><text x="100" y="138" font-size="20" fill="#fff">100 °C</text><text x="240" y="160" font-size="12" fill="#333">100 °C</text>
+    <text x="100" y="198" font-size="14" fill="#333">pentola</text><text x="240" y="198" font-size="14" fill="#333">tazzina</text></g></svg>`},
+  thermo(val,min,max,notes=false){
+    const W=notes?300:170,X=notes?70:85,top=30,bot=200,Y=t=>bot-(t-min)/(max-min)*(bot-top),step=(max-min)<=70?1:5,lstep=(max-min)<=70?10:20,m=t=>String(t).replace('-','−');
+    let tk='',lb='',nt='';
+    for(let t=Math.ceil(min/step)*step;t<=max;t+=step){const y=Y(t),L=t%10===0?14:t%5===0?9:5;tk+=`<line x1="${X+12}" y1="${y}" x2="${X+12+L}" y2="${y}"/>`;if(t%lstep===0)lb+=`<text x="${X-15}" y="${y+4}">${m(t)}</text>`}
+    if(notes)[[0,'0 °C','il ghiaccio fonde'],[100,'100 °C','l’acqua bolle']].forEach(([t,a,b])=>{const y=Y(t);nt+=`<line x1="${X+30}" y1="${y}" x2="${X+92}" y2="${y}" stroke="#8a8f98" stroke-dasharray="4 4"/><text x="${X+98}" y="${y+1}" font-weight="800">${a}</text><text x="${X+98}" y="${y+15}" font-size="11" fill="#5f6670">${b}</text>`});
+    return `<svg viewBox="0 0 ${W} 255" xmlns="http://www.w3.org/2000/svg" role="img">
+     <rect x="${X-10}" y="14" width="20" height="200" rx="10" fill="#f4f8fb" stroke="#6b7280" stroke-width="2.5"/>
+     <circle cx="${X}" cy="228" r="18" fill="#e5484d" stroke="#6b7280" stroke-width="2.5"/>
+     <rect x="${X-4}" y="${Y(val)}" width="8" height="${222-Y(val)}" fill="#e5484d"/>
+     <g stroke="#444" stroke-width="1.3">${tk}</g>
+     <g ${FONT} font-size="12" font-weight="700" fill="#333" text-anchor="end">${lb}</g>
+     <text x="${X+30}" y="20" ${FONT} font-size="13" font-weight="800" fill="#333">°C</text>
+     <g ${FONT} font-size="13" fill="#333">${nt}</g></svg>`},
+  thermoTypes(){let tk='';for(let k=0;k<9;k++)tk+=`<line x1="46" y1="${50+k*11}" x2="${k%2?50:53}" y2="${50+k*11}"/>`;
+    return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img">
+    <rect x="20" y="30" width="40" height="140" rx="8" fill="#f4efe6" stroke="#8a8f98" stroke-width="2"/>
+    <rect x="36" y="42" width="8" height="106" rx="4" fill="#fff" stroke="#8a8f98"/><rect x="38" y="95" width="4" height="56" fill="#e5484d"/><circle cx="40" cy="153" r="7" fill="#e5484d"/>
+    <g stroke="#555" stroke-width="1.2">${tk}</g>
+    <rect x="108" y="30" width="10" height="130" rx="5" fill="#eef3f8" stroke="#6b7280" stroke-width="2"/>
+    <rect x="111.5" y="112" width="3" height="50" fill="#e5484d"/><circle cx="113" cy="164" r="7" fill="#e5484d" stroke="#6b7280" stroke-width="1.5"/>
+    <rect x="183" y="150" width="8" height="22" rx="3" fill="#b8bec7" stroke="#6b7280"/>
+    <rect x="170" y="30" width="34" height="122" rx="14" fill="#f5f7fa" stroke="#6b7280" stroke-width="2"/>
+    <rect x="175" y="52" width="24" height="34" rx="3" fill="#cfe3d4"/><circle cx="187" cy="110" r="6" fill="#2b6cb0"/>
+    <path d="M228 60 h48 q10 0 10 10 v18 q0 10 -10 10 h-18 l6 52 q1 8 -7 8 h-10 q-8 0 -9 -8 l-6 -52 h-4 q-10 0 -10 -10 v-18 q0 -10 10 -10z" fill="#e9ecef" stroke="#6b7280" stroke-width="2"/>
+    <rect x="228" y="66" width="30" height="22" rx="3" fill="#cfe3d4"/>
+    <path d="M289 72 l9 -6 M289 79 h10 M289 86 l9 6" stroke="#e5484d" stroke-width="2" stroke-linecap="round"/>
+    <g ${FONT} font-weight="800" fill="#1f3b2a" font-size="9" text-anchor="middle"><text x="187" y="73">36,8</text><text x="243" y="81">36,5</text></g>
+    <g ${FONT} font-size="12" font-weight="700" fill="#333" text-anchor="middle"><text x="40" y="196">da ambiente</text><text x="113" y="196">clinico</text><text x="187" y="196">digitale</text><text x="252" y="196">a infrarossi</text></g></svg>`},
+
+  /* --- passaggi di stato --- */
+  states(colored){const id=++uid,R=colored?'#d9480f':'#6b7280',B=colored?'#2563eb':'#6b7280',r=rng(83);
+    const mini=(x,kind)=>{let s=`<rect x="${x}" y="80" width="80" height="70" rx="8" fill="#fff" stroke="#8a8f98" stroke-width="2"/>`;
+      if(kind==='s'){for(let j=0;j<3;j++)for(let i=0;i<4;i++)s+=P(x+17.5+i*15,142-j*15,7)}
+      if(kind==='l'){s+=`<rect x="${x+1.5}" y="110" width="77" height="38.5" rx="6" fill="#eaf4fc"/>`;for(let j=0;j<2;j++)for(let i=0;i<5;i++)s+=P(x+13+i*13+j*5+(r()-.5)*3,141-j*14+(r()-.5)*3,7)}
+      if(kind==='g'){[[18,96],[56,93],[37,117],[64,130],[17,138]].forEach(([a,b])=>s+=P(x+a,b,7))}
+      return s};
+    return `<svg viewBox="0 0 320 232" xmlns="http://www.w3.org/2000/svg" role="img"><defs>${arrowMarker('sr'+id,R)}${arrowMarker('sb'+id,B)}</defs>
+    ${mini(20,'s')}${mini(120,'l')}${mini(220,'g')}
+    <g fill="none" stroke-width="3"><path d="M68 76 Q110 40 152 76" stroke="${R}" marker-end="url(#sr${id})"/><path d="M168 76 Q210 40 252 76" stroke="${R}" marker-end="url(#sr${id})"/>
+    <path d="M152 180 Q110 216 68 180" stroke="${B}" marker-end="url(#sb${id})"/><path d="M252 180 Q210 216 168 180" stroke="${B}" marker-end="url(#sb${id})"/></g>
+    <g ${FONT} text-anchor="middle" font-weight="800"><text x="60" y="170" font-size="14" fill="#333">Solido</text><text x="160" y="170" font-size="14" fill="#333">Liquido</text><text x="260" y="170" font-size="14" fill="#333">Aeriforme</text>
+    <g font-size="13"><text x="110" y="46" fill="${R}">fusione</text><text x="210" y="46" fill="${R}">vaporizzazione</text><text x="110" y="226" fill="${B}">solidificazione</text><text x="210" y="226" fill="${B}">condensazione</text></g></g></svg>`},
+  heatCurve(labels){const id=++uid;
+    return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img"><defs>${arrowMarker('ha'+id,'#555')}</defs>
+    <g stroke="#555" stroke-width="2" fill="none"><line x1="45" y1="180" x2="288" y2="180" marker-end="url(#ha${id})"/><line x1="45" y1="180" x2="45" y2="14" marker-end="url(#ha${id})"/></g>
+    <g stroke="#b9bec5" stroke-dasharray="4 4"><line x1="45" y1="145" x2="135" y2="145"/><line x1="45" y1="45" x2="245" y2="45"/></g>
+    <polyline points="50,165 85,145 135,145 185,45 245,45 275,25" fill="none" stroke="#2b6cb0" stroke-width="3.5" stroke-linejoin="round"/>
+    <g ${FONT} font-size="12" font-weight="700" fill="#333"><text x="40" y="149" text-anchor="end">0</text><text x="40" y="49" text-anchor="end">100</text>
+    <text x="52" y="16">temperatura (°C)</text><text x="285" y="198" text-anchor="end">tempo</text></g>
+    ${labels?`<g ${FONT} font-size="12" font-weight="700" fill="#5f6670" text-anchor="middle"><text x="76" y="170">ghiaccio</text><text x="110" y="138" fill="#d9480f">fusione</text><text x="182" y="105" text-anchor="start">acqua</text><text x="215" y="38" fill="#d9480f">ebollizione</text><text x="268" y="58">vapore</text></g>`:''}</svg>`},
+  melting(){const rays=[0,45,90,135,180,225,270,315].map(d=>{const a=d*Math.PI/180;return `<line x1="${250+28*Math.cos(a)}" y1="${45+28*Math.sin(a)}" x2="${250+38*Math.cos(a)}" y2="${45+38*Math.sin(a)}"/>`}).join('');
+    return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img">
+    <g stroke="#f6c344" stroke-width="4" stroke-linecap="round">${rays}</g><circle cx="250" cy="45" r="21" fill="#f6c344"/>
+    <ellipse cx="145" cy="170" rx="100" ry="17" fill="#9cc9ef" opacity=".85"/>
+    <path d="M110 90 L130 72 L200 72 L180 90 Z" fill="#e6f4fd" stroke="#7fb3d9" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M180 90 L200 72 L200 142 L180 162 Z" fill="#b5dbf5" stroke="#7fb3d9" stroke-width="2" stroke-linejoin="round"/>
+    <rect x="110" y="90" width="70" height="72" fill="#cfe9fb" stroke="#7fb3d9" stroke-width="2"/>
+    <path d="M120 100 L120 128" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>
+    <g fill="#7fb3d9"><path d="M108 132 q-4 7 0 9 q4 -2 0 -9z"/><path d="M186 150 q-4 7 0 9 q4 -2 0 -9z"/><path d="M150 164 q-4 7 0 9 q4 -2 0 -9z"/></g></svg>`},
+  freezing(){const cubes=[55,103,151,199].map(x=>`<rect x="${x}" y="126" width="42" height="38" rx="4" fill="#f7fafc"/><rect x="${x+4}" y="130" width="34" height="30" rx="5" fill="#cfe9fb" stroke="#7fb3d9" stroke-width="1.5"/><path d="M${x+10} ${x?136:136} h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`).join('');
+    const flake=[0,60,120].map(d=>`<line x1="${250-18*Math.cos(d*Math.PI/180)}" y1="${50-18*Math.sin(d*Math.PI/180)}" x2="${250+18*Math.cos(d*Math.PI/180)}" y2="${50+18*Math.sin(d*Math.PI/180)}"/>`).join('');
+    return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img">
+    <rect x="20" y="20" width="260" height="175" rx="12" fill="#eef6fc" stroke="#8a8f98" stroke-width="2.5"/>
+    <text x="36" y="50" ${FONT} font-size="15" font-weight="800" fill="#2f6f9e">freezer  −18 °C</text>
+    <g stroke="#7fb3d9" stroke-width="3" stroke-linecap="round">${flake}</g>
+    <rect x="50" y="120" width="200" height="50" rx="6" fill="#dfe5ea" stroke="#8a8f98" stroke-width="2"/>${cubes}</svg>`},
+  condensation(){const r=rng(61);let d='';for(let i=0;i<42;i++){const x=116+r()*68,y=96+r()*88;d+=`<ellipse cx="${x}" cy="${y}" rx="2.6" ry="3.4" fill="#fff" stroke="#5a9bd4" stroke-width="1"/>`}
+    return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img">
+    <line x1="30" y1="194" x2="270" y2="194" stroke="#8a8f98" stroke-width="2"/><ellipse cx="150" cy="194" rx="52" ry="4" fill="#bcdcf3"/>
+    <path d="M135 26 h30 v34 q25 12 25 36 v86 q0 10 -10 10 h-60 q-10 0 -10 -10 v-86 q0 -24 25 -36 z" fill="#dff0fb" stroke="#6b7280" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="132" y="14" width="36" height="14" rx="3" fill="#2b6cb0"/>${d}</svg>`},
+  evaporation(){const rays=[0,45,90,135,180,225,270,315].map(d=>{const a=d*Math.PI/180;return `<line x1="${60+28*Math.cos(a)}" y1="${52+28*Math.sin(a)}" x2="${60+38*Math.cos(a)}" y2="${52+38*Math.sin(a)}"/>`}).join('');
+    const vap=[140,175,210].map(x=>`<path d="M${x} 154 q7 -9 0 -18 q-7 -9 0 -18 q7 -9 0 -18 q-7 -9 0 -18" fill="none" stroke="#8fc1ea" stroke-width="3" stroke-linecap="round" opacity=".85"/>`).join('');
+    return `<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" role="img">
+    <g stroke="#f6c344" stroke-width="4" stroke-linecap="round">${rays}</g><circle cx="60" cy="52" r="21" fill="#f6c344"/>
+    <rect x="10" y="172" width="280" height="28" rx="6" fill="#e3d6bd"/><ellipse cx="175" cy="174" rx="100" ry="15" fill="#8fc1ea"/>${vap}</svg>`},
+  boiling(){const r=rng(71);let d='';for(let i=0;i<28;i++){const x=58+r()*104,y=80+r()*120,s=2+r()*5;d+=`<circle cx="${x}" cy="${y}" r="${s}" fill="#fff" fill-opacity=".55" stroke="#5a9bd4" stroke-width="1.2"/>`}
+    const steam=[85,110,135].map(x=>`<path d="M${x} 56 q6 -8 0 -16 q-6 -8 0 -16" fill="none" stroke="#9aa3ad" stroke-width="3" stroke-linecap="round" opacity=".85"/>`).join('');
+    return SVG.glass('#cfe6f8',d,steam)}
 };
 
 /* ---------- Definizioni ---------- */
+const GROUPS=[['materia','La materia e le sue particelle'],['miscugli','Sostanze pure e miscugli'],['stati','Gli stati della materia'],['calore','Calore e temperatura'],['passaggi','I passaggi di stato']];
 const DEFS=[
-  {t:'Atomo',tag:'particella',svg:SVG.atom(),d:'La più piccola particella di un elemento chimico che ne conserva le caratteristiche. È formato da un nucleo centrale (protoni e neutroni) e da elettroni che si muovono intorno.',ex:'Esempi: un atomo di ossigeno (O), di carbonio (C), di ferro (Fe).'},
-  {t:'Molecola',tag:'particella',svg:SVG.h2o(),d:'Gruppo di due o più atomi uniti tra loro da legami chimici. È la più piccola parte di una sostanza che ne conserva le proprietà. Gli atomi possono essere uguali o diversi.',ex:'Esempi: ossigeno O₂ (atomi uguali), acqua H₂O, anidride carbonica CO₂ (atomi diversi).'},
-  {t:'Sostanza (pura)',tag:'materia',svg:SVG.pure(),d:'Materiale formato da un solo tipo di particelle, con composizione costante e proprietà ben definite (per esempio una precisa temperatura di fusione e di ebollizione). Può essere un elemento o un composto.',ex:'Esempi: acqua distillata, ossigeno, oro, sale da cucina puro.'},
-  {t:'Miscuglio',tag:'materia',svg:SVG.air(),d:'Unione di due o più sostanze diverse che non reagiscono tra loro: ognuna conserva le proprie proprietà. La composizione può variare e i componenti si possono separare con metodi fisici (filtrazione, evaporazione, decantazione…).',ex:'Esempi: aria, acqua e sale, acqua e sabbia.'},
-  {t:'Miscuglio omogeneo',tag:'miscuglio',svg:SVG.homog(),d:'Miscuglio in cui i componenti non si distinguono, né a occhio nudo né al microscopio: appare uniforme in ogni sua parte (una sola fase). Le soluzioni sono miscugli omogenei.',ex:'Esempi: acqua e sale disciolto, aria, acqua e zucchero, ottone.'},
-  {t:'Miscuglio eterogeneo',tag:'miscuglio',svg:SVG.hetero(),d:'Miscuglio in cui i componenti si distinguono a occhio nudo o al microscopio: non è uniforme e presenta due o più fasi.',ex:'Esempi: granito, acqua e sabbia, acqua e olio, insalata mista.'},
-  {t:'Emulsione',tag:'miscuglio eterogeneo',svg:SVG.emulsion(),d:'Miscuglio eterogeneo di due liquidi che non si mescolano tra loro: uno è disperso nell’altro sotto forma di piccolissime goccioline. Senza un emulsionante, col tempo i due liquidi tendono a separarsi.',ex:'Esempi: latte, maionese, olio e aceto agitati.'},
-  {t:'Sospensione',tag:'miscuglio eterogeneo',svg:SVG.suspension(),d:'Miscuglio eterogeneo in cui particelle solide, che non si sciolgono, sono disperse in un liquido. Lasciando riposare, le particelle si depositano sul fondo (sedimentano).',ex:'Esempi: acqua e terra (acqua fangosa), succo di frutta con polpa, sciroppi da “agitare prima dell’uso”.'}
+  {g:'materia',t:'Materia',tag:'materia',svg:SVG.matter(),d:'Tutto ciò che ha una massa e occupa uno spazio (cioè ha un volume). È materia ciò che si vede e si tocca, come un sasso o l’acqua, ma anche l’aria, che non si vede. Non sono materia la luce, il suono e il calore, che sono forme di energia.',ex:'Esempi: un sasso (solido), l’acqua (liquido), l’aria in un palloncino (aeriforme). La massa si misura in chilogrammi (kg), il volume in litri (L) o metri cubi (m³).'},
+  {g:'materia',t:'Atomo',tag:'particella',svg:SVG.atom(),d:'La più piccola particella di un elemento chimico che ne conserva le caratteristiche. È formato da un nucleo centrale (protoni e neutroni) e da elettroni che si muovono intorno.',ex:'Esempi: un atomo di ossigeno (O), di carbonio (C), di ferro (Fe).'},
+  {g:'materia',t:'Molecola',tag:'particella',svg:SVG.h2o(),d:'Gruppo di due o più atomi uniti tra loro da legami chimici. È la più piccola parte di una sostanza che ne conserva le proprietà. Gli atomi possono essere uguali o diversi.',ex:'Esempi: ossigeno O₂ (atomi uguali), acqua H₂O, anidride carbonica CO₂ (atomi diversi).'},
+  {g:'miscugli',t:'Sostanza (pura)',tag:'materia',svg:SVG.pure(),d:'Materiale formato da un solo tipo di particelle, con composizione costante e proprietà ben definite (per esempio una precisa temperatura di fusione e di ebollizione). Può essere un elemento, formato da atomi di un solo tipo, o un composto, formato da atomi di tipi diversi.',ex:'Esempi: acqua distillata, ossigeno, oro, sale da cucina puro.'},
+  {g:'miscugli',t:'Miscuglio',tag:'materia',svg:SVG.air(),d:'Unione di due o più sostanze diverse che non reagiscono tra loro: ognuna conserva le proprie proprietà. La composizione può variare e i componenti si possono separare con metodi fisici (filtrazione, evaporazione, decantazione…).',ex:'Esempi: aria, acqua e sale, acqua e sabbia.'},
+  {g:'miscugli',t:'Miscuglio omogeneo',tag:'miscuglio',svg:SVG.homog(),d:'Miscuglio in cui i componenti non si distinguono, né a occhio nudo né al microscopio: appare uniforme in ogni sua parte (una sola fase). Le soluzioni sono miscugli omogenei.',ex:'Esempi: acqua e sale disciolto, aria, acqua e zucchero, ottone.'},
+  {g:'miscugli',t:'Miscuglio eterogeneo',tag:'miscuglio',svg:SVG.hetero(),d:'Miscuglio in cui i componenti si distinguono a occhio nudo o al microscopio: non è uniforme e presenta due o più fasi.',ex:'Esempi: granito, acqua e sabbia, acqua e olio, insalata mista.'},
+  {g:'miscugli',t:'Emulsione',tag:'miscuglio eterogeneo',svg:SVG.emulsion(),d:'Miscuglio eterogeneo di due liquidi che non si mescolano tra loro: uno è disperso nell’altro sotto forma di piccolissime goccioline. Senza un emulsionante, col tempo i due liquidi tendono a separarsi.',ex:'Esempi: latte, maionese, olio e aceto agitati.'},
+  {g:'miscugli',t:'Sospensione',tag:'miscuglio eterogeneo',svg:SVG.suspension(),d:'Miscuglio eterogeneo in cui particelle solide, che non si sciolgono, sono disperse in un liquido. Lasciando riposare, le particelle si depositano sul fondo (sedimentano).',ex:'Esempi: acqua e terra (acqua fangosa), succo di frutta con polpa, sciroppi da “agitare prima dell’uso”.'},
+  {g:'stati',t:'Solido',tag:'stato della materia',svg:SVG.solid(),d:'Ha forma e volume propri. Le particelle sono vicinissime, ordinate e tenute insieme da forze intense: non possono spostarsi, ma vibrano intorno a posizioni fisse. Un solido non si può comprimere.',ex:'Esempi: ghiaccio, ferro, legno, sale.'},
+  {g:'stati',t:'Liquido',tag:'stato della materia',svg:SVG.liquid(),d:'Ha un volume proprio ma non una forma propria: prende la forma del recipiente che lo contiene. Le particelle sono vicine, ma le forze tra loro sono meno intense e possono scorrere le une sulle altre. È quasi incomprimibile.',ex:'Esempi: acqua, olio, latte, succo di frutta.'},
+  {g:'stati',t:'Aeriforme (gas)',tag:'stato della materia',svg:SVG.gas(),d:'Non ha né forma né volume propri: occupa tutto lo spazio a disposizione. Le particelle sono molto lontane tra loro, le forze che le legano sono debolissime e si muovono velocemente in ogni direzione. Si può comprimere facilmente.',ex:'Esempi: aria, vapore acqueo, anidride carbonica, il gas dei fornelli.'},
+  {g:'calore',t:'Calore',tag:'energia',svg:SVG.heat('corpo caldo','70 °C','corpo freddo','20 °C'),d:'È energia che passa da un corpo più caldo a uno più freddo, finché i due raggiungono la stessa temperatura (equilibrio termico). Un corpo non “contiene” calore: lo cede o lo riceve. Si misura in joule (J) o in calorie (cal).',ex:'Esempi: il tè caldo cede calore al cucchiaio; la mano riceve calore dal termosifone.'},
+  {g:'calore',t:'Temperatura',tag:'grandezza',svg:SVG.tempP(),d:'Indica quanto un corpo è caldo o freddo. Dipende da quanto velocemente si muovono le sue particelle: più si agitano, più la temperatura è alta (nel disegno l’acqua B è più calda dell’acqua A). Si misura con il termometro in gradi Celsius (°C). Non è la stessa cosa del calore e non dipende dalla quantità: una pentola e una tazzina di acqua bollente hanno la stessa temperatura, ma la pentola può cedere molto più calore.',ex:'Esempi: corpo umano circa 36,5 °C; ghiaccio che fonde 0 °C; acqua che bolle 100 °C (a livello del mare).'},
+  {g:'calore',t:'Termometro',tag:'strumento',svg:SVG.thermo(20,-10,110,true),d:'Strumento che misura la temperatura. Nel termometro a liquido, un liquido colorato si dilata quando si scalda e sale nel tubicino sottile; si legge il valore sulla scala. Nella scala Celsius 0 °C è la temperatura del ghiaccio che fonde e 100 °C quella dell’acqua che bolle; l’intervallo è diviso in 100 parti uguali, i gradi.',ex:'Per leggerlo bisogna aspettare che raggiunga la stessa temperatura del corpo da misurare.'},
+  {g:'calore',t:'Tipi di termometro',tag:'strumento',svg:SVG.thermoTypes(),d:'<b>Da ambiente</b>: misura la temperatura dell’aria, all’incirca da −30 a +50 °C. <b>Clinico</b>: misura la temperatura del corpo, con una scala da 35 a 42 °C. <b>Digitale</b>: ha un sensore elettronico e mostra il valore su un display. <b>A infrarossi</b>: misura la temperatura a distanza, senza toccare.',ex:'I vecchi termometri al mercurio, tossico, oggi non si vendono più.'},
+  {g:'passaggi',wide:true,t:'Passaggi di stato',tag:'trasformazioni',svg:SVG.states(true)+SVG.heatCurve(true),d:'Una sostanza può passare da uno stato all’altro se riceve o cede calore. Assorbendo calore avvengono la <b style="color:#d9480f">fusione</b> (solido → liquido) e la <b style="color:#d9480f">vaporizzazione</b> (liquido → aeriforme); cedendo calore avvengono la <b style="color:#2563eb">solidificazione</b> (liquido → solido) e la <b style="color:#2563eb">condensazione</b> (aeriforme → liquido). Durante un passaggio di stato la temperatura resta costante (<b>sosta termica</b>): il calore serve a separare le particelle, non a scaldarle. La sostanza non cambia: ghiaccio, acqua e vapore sono sempre H₂O.',ex:'Nel grafico: riscaldando il ghiaccio, la temperatura resta ferma a 0 °C mentre fonde e a 100 °C mentre l’acqua bolle.'},
+  {g:'passaggi',t:'Fusione',tag:'passaggio di stato',svg:SVG.melting(),d:'Passaggio dallo stato solido allo stato liquido. Avviene assorbendo calore, a una temperatura precisa per ogni sostanza, detta temperatura di fusione: per il ghiaccio è 0 °C.',ex:'Esempi: il ghiaccio che si scioglie, il gelato al sole, il burro in padella, la cera della candela accesa.'},
+  {g:'passaggi',t:'Solidificazione',tag:'passaggio di stato',svg:SVG.freezing(),d:'Passaggio dallo stato liquido allo stato solido. Avviene cedendo calore, alla stessa temperatura della fusione: l’acqua solidifica a 0 °C.',ex:'Esempi: l’acqua nel freezer che diventa ghiaccio, la lava che raffreddandosi diventa roccia, la cera che cola dalla candela.'},
+  {g:'passaggi',t:'Evaporazione',tag:'vaporizzazione',svg:SVG.evaporation(),d:'La vaporizzazione è il passaggio dallo stato liquido a quello aeriforme e avviene assorbendo calore. Può avvenire in due modi: l’evaporazione e l’ebollizione. L’evaporazione è lenta, avviene solo sulla superficie del liquido e a qualsiasi temperatura.',ex:'Esempi: la pozzanghera che si asciuga, i panni stesi, il sudore che evaporando rinfresca la pelle.'},
+  {g:'passaggi',t:'Ebollizione',tag:'vaporizzazione',svg:SVG.boiling(),d:'È la vaporizzazione che avviene in tutto il liquido, con la formazione di bolle di vapore, a una temperatura precisa detta temperatura di ebollizione: per l’acqua, a livello del mare, è 100 °C. Finché l’acqua bolle, la sua temperatura non sale.',ex:'Esempi: l’acqua della pasta che bolle, il bollitore.'},
+  {g:'passaggi',t:'Condensazione',tag:'passaggio di stato',svg:SVG.condensation(),d:'Passaggio dallo stato aeriforme allo stato liquido. Avviene cedendo calore, per esempio quando il vapore acqueo tocca una superficie fredda. Per i gas si parla anche di liquefazione.',ex:'Esempi: le goccioline sulla bottiglia fredda, lo specchio appannato dopo la doccia, la rugiada, le nuvole.'}
 ];
-document.getElementById('defs').innerHTML=DEFS.map(x=>`<article class="def"><div class="pic">${x.svg}</div><span class="tag">${x.tag}</span><h2>${x.t}</h2><p>${x.d}</p><p class="ex">${x.ex}</p></article>`).join('');
+const card=x=>`<article class="def${x.wide?' wide':''}"><div class="pic">${x.svg}</div><span class="tag">${x.tag}</span><h2>${x.t}</h2><p>${x.d}</p><p class="ex">${x.ex}</p></article>`;
+document.getElementById('defs').innerHTML=GROUPS.map(([g,title])=>`<h2 class="sec">${title}</h2><div class="grid">${DEFS.filter(x=>x.g===g).map(card).join('')}</div>`).join('');
 
 /* ---------- Quiz ---------- */
+const TOPICS={materia:'Materia, atomi e molecole',miscugli:'Sostanze pure e miscugli',stati:'Stati della materia',calore:'Calore, temperatura e termometri',passaggi:'Passaggi di stato'};
 const Q=[
-  {img:SVG.atom(),q:'Che cosa rappresenta questo modello?',o:['Un atomo','Una molecola','Un miscuglio','Una sostanza'],a:0,e:'Si vedono un nucleo (protoni e neutroni) ed elettroni che gli girano intorno: è il modello di un atomo.'},
-  {img:SVG.h2o(),q:'Il modello mostra 1 atomo di ossigeno (rosso) legato a 2 atomi di idrogeno (bianchi). Che cos’è?',o:['Una molecola','Un atomo','Un miscuglio omogeneo','Una sospensione'],a:0,e:'Più atomi uniti da legami chimici formano una molecola: questa è la molecola d’acqua, H₂O.'},
-  {img:SVG.co2(),q:'Da quanti atomi è formata questa molecola di anidride carbonica (CO₂)?',o:['3 atomi di 2 elementi diversi','2 atomi dello stesso elemento','3 atomi di 3 elementi diversi','1 solo atomo'],a:0,e:'CO₂ = 1 atomo di carbonio + 2 atomi di ossigeno: 3 atomi in tutto, di 2 elementi diversi.'},
-  {img:SVG.pure(),q:'Osserva le particelle nel recipiente. Che cosa rappresenta il disegno?',o:['Una sostanza pura','Un miscuglio omogeneo','Un miscuglio eterogeneo','Un’emulsione'],a:0,e:'Tutte le particelle sono molecole uguali (H₂O): c’è un solo tipo di particella, quindi è una sostanza pura.'},
-  {img:SVG.air(),q:'Il disegno mostra le particelle dell’aria. Quale affermazione è corretta?',o:['È un miscuglio omogeneo di più sostanze','È una sostanza pura, perché è un gas','È un miscuglio eterogeneo, perché le particelle sono diverse','Contiene un solo tipo di molecola'],a:0,e:'Nell’aria ci sono sostanze diverse (azoto, ossigeno, argon…) distribuite in modo uniforme: è un miscuglio omogeneo.'},
-  {img:SVG.hetero(),q:'Nel recipiente ci sono due tipi di particelle che restano in due zone separate. Che cosa rappresenta?',o:['Un miscuglio eterogeneo','Un miscuglio omogeneo','Una sostanza pura','Una molecola'],a:0,e:'Le due sostanze non si distribuiscono in modo uniforme e formano due fasi distinte: è un miscuglio eterogeneo.'},
-  {img:SVG.saltwater(),q:'In questo bicchiere d’acqua è stato sciolto completamente un cucchiaino di sale: il liquido è limpido e uguale in ogni punto. Che cos’è?',o:['Un miscuglio omogeneo (soluzione)','Una sostanza pura','Una sospensione','Un’emulsione'],a:0,e:'Il sale si scioglie e non si distingue più dall’acqua: è un miscuglio omogeneo, cioè una soluzione. Non è una sostanza pura perché le sostanze sono due.'},
-  {img:SVG.emulsion(),q:'Olio e aceto sono stati agitati energicamente: l’olio forma tante goccioline sparse nel liquido. Come si chiama questo miscuglio?',o:['Emulsione','Sospensione','Soluzione','Sostanza pura'],a:0,e:'Due liquidi che non si mescolano, con uno disperso in goccioline nell’altro, formano un’emulsione. Col tempo olio e aceto si separano di nuovo.'},
-  {img:SVG.suspension(),q:'Acqua e terra sono state mescolate. Dopo un po’ le particelle di terra si depositano sul fondo. Che tipo di miscuglio è?',o:['Una sospensione','Un’emulsione','Un miscuglio omogeneo','Una sostanza pura'],a:0,e:'Particelle solide non disciolte, disperse in un liquido, che col tempo sedimentano: è una sospensione.'},
-  {img:SVG.granite(),q:'Questo è un pezzo di granito: si vedono a occhio nudo granuli di colori diversi. Come lo classifichi?',o:['Miscuglio eterogeneo','Miscuglio omogeneo','Sostanza pura','Emulsione'],a:0,e:'I diversi minerali (quarzo, feldspato, mica) si distinguono a occhio nudo: il granito è un miscuglio eterogeneo.'}
+  /* materia, atomi e molecole */
+  {t:'materia',img:SVG.matter(),q:'Che cos’è la materia?',o:['Tutto ciò che ha una massa e occupa uno spazio','Solo ciò che si può vedere','Solo i solidi e i liquidi','Solo ciò che si può toccare con le mani'],a:0,e:'La materia è tutto ciò che ha una massa e un volume: anche l’aria, che non si vede e non si afferra, è materia.'},
+  {t:'materia',img:SVG.bulb(),q:'Quale di questi NON è materia?',o:['La luce di una lampadina','L’aria in un palloncino','L’acqua in un bicchiere','Un sasso'],a:0,e:'La luce è una forma di energia: non ha massa e non occupa spazio. L’aria, l’acqua e il sasso sono invece materia.'},
+  {t:'materia',img:SVG.balance(),q:'Sulla bilancia, il palloncino gonfio pesa più di quello sgonfio. Che cosa dimostra?',o:['Che l’aria ha una massa, quindi è materia','Che l’aria non è materia','Che la gomma del palloncino è aumentata','Che l’aria è un liquido'],a:0,e:'L’unica differenza tra i due palloncini è l’aria che contengono: se il palloncino gonfio pesa di più, l’aria ha una massa. Quindi l’aria è materia.'},
+  {t:'materia',img:SVG.liquidShapes(),q:'Lo spazio occupato da un corpo si chiama…',o:['Volume','Massa','Temperatura','Calore'],a:0,e:'Il volume è lo spazio occupato da un corpo e si misura in litri o in metri cubi. La massa indica invece la quantità di materia e si misura in chilogrammi.'},
+  {t:'materia',img:SVG.atom(),q:'Che cosa rappresenta questo modello?',o:['Un atomo','Una molecola','Un miscuglio','Una sostanza'],a:0,e:'Si vedono un nucleo (protoni e neutroni) ed elettroni che gli girano intorno: è il modello di un atomo.'},
+  {t:'materia',img:SVG.atom(),q:'In un atomo, dove si trovano i protoni e i neutroni?',o:['Nel nucleo, al centro dell’atomo','Intorno al nucleo, insieme agli elettroni','Fuori dall’atomo','Dentro gli elettroni'],a:0,e:'Protoni (rossi nel disegno) e neutroni (grigi) formano il nucleo; gli elettroni (blu) si muovono intorno.'},
+  {t:'materia',img:SVG.h2o(),q:'Il modello mostra 1 atomo di ossigeno (rosso) legato a 2 atomi di idrogeno (bianchi). Che cos’è?',o:['Una molecola','Un atomo','Un miscuglio omogeneo','Una sospensione'],a:0,e:'Più atomi uniti da legami chimici formano una molecola: questa è la molecola d’acqua, H₂O.'},
+  {t:'materia',img:SVG.h2o(),q:'Quanti atomi formano una molecola d’acqua (H₂O)?',o:['3','2','1','4'],a:0,e:'H₂O: 2 atomi di idrogeno (H) e 1 atomo di ossigeno (O), cioè 3 atomi in tutto.'},
+  {t:'materia',img:SVG.co2(),q:'Da quanti atomi è formata questa molecola di anidride carbonica (CO₂)?',o:['3 atomi di 2 elementi diversi','2 atomi dello stesso elemento','3 atomi di 3 elementi diversi','1 solo atomo'],a:0,e:'CO₂ = 1 atomo di carbonio + 2 atomi di ossigeno: 3 atomi in tutto, di 2 elementi diversi.'},
+  {t:'materia',img:SVG.o2(),q:'Questa molecola di ossigeno (O₂) è formata da due atomi uguali. Si tratta di…',o:['Un elemento','Un composto','Un miscuglio','Una soluzione'],a:0,e:'Una sostanza formata da atomi di un solo tipo è un elemento. L’acqua (H₂O), formata da atomi di tipi diversi, è invece un composto.'},
+  /* sostanze pure e miscugli */
+  {t:'miscugli',img:SVG.pure(),q:'Osserva le particelle nel recipiente. Che cosa rappresenta il disegno?',o:['Una sostanza pura','Un miscuglio omogeneo','Un miscuglio eterogeneo','Un’emulsione'],a:0,e:'Tutte le particelle sono molecole uguali (H₂O): c’è un solo tipo di particella, quindi è una sostanza pura.'},
+  {t:'miscugli',img:SVG.air(),q:'Il disegno mostra le particelle dell’aria. Quale affermazione è corretta?',o:['È un miscuglio omogeneo di più sostanze','È una sostanza pura, perché è un gas','È un miscuglio eterogeneo, perché le particelle sono diverse','Contiene un solo tipo di molecola'],a:0,e:'Nell’aria ci sono sostanze diverse (azoto, ossigeno, argon…) distribuite in modo uniforme: è un miscuglio omogeneo.'},
+  {t:'miscugli',img:SVG.hetero(),q:'Nel recipiente ci sono due tipi di particelle che restano in due zone separate. Che cosa rappresenta?',o:['Un miscuglio eterogeneo','Un miscuglio omogeneo','Una sostanza pura','Una molecola'],a:0,e:'Le due sostanze non si distribuiscono in modo uniforme e formano due fasi distinte: è un miscuglio eterogeneo.'},
+  {t:'miscugli',img:SVG.saltwater(),q:'In questo bicchiere d’acqua è stato sciolto completamente un cucchiaino di sale: il liquido è limpido e uguale in ogni punto. Che cos’è?',o:['Un miscuglio omogeneo (soluzione)','Una sostanza pura','Una sospensione','Un’emulsione'],a:0,e:'Il sale si scioglie e non si distingue più dall’acqua: è un miscuglio omogeneo, cioè una soluzione. Non è una sostanza pura perché le sostanze sono due.'},
+  {t:'miscugli',img:SVG.saltwater(),q:'Come puoi separare il sale dall’acqua in cui è sciolto?',o:['Facendo evaporare l’acqua','Filtrando con un filtro di carta','Usando una calamita','Lasciando riposare il bicchiere'],a:0,e:'Il sale sciolto passa attraverso il filtro e non si deposita sul fondo. Se invece l’acqua evapora, il sale resta nel recipiente.'},
+  {t:'miscugli',img:SVG.homog(),q:'Quale di questi è un miscuglio omogeneo?',o:['Acqua e zucchero sciolto','Acqua e olio','Acqua e sabbia','Insalata mista'],a:0,e:'Lo zucchero si scioglie e non si distingue più dall’acqua: è una soluzione, cioè un miscuglio omogeneo. Gli altri sono miscugli eterogenei.'},
+  {t:'miscugli',img:SVG.emulsion(),q:'Olio e aceto sono stati agitati energicamente: l’olio forma tante goccioline sparse nel liquido. Come si chiama questo miscuglio?',o:['Emulsione','Sospensione','Soluzione','Sostanza pura'],a:0,e:'Due liquidi che non si mescolano, con uno disperso in goccioline nell’altro, formano un’emulsione. Col tempo olio e aceto si separano di nuovo.'},
+  {t:'miscugli',img:SVG.emulsion(),q:'Il latte è formato da goccioline di grasso disperse nell’acqua. Che cos’è?',o:['Un’emulsione','Una sostanza pura','Una soluzione','Una sospensione'],a:0,e:'Goccioline di un liquido (il grasso) disperse in un altro liquido con cui non si mescola (l’acqua): è un’emulsione.'},
+  {t:'miscugli',img:SVG.suspension(),q:'Acqua e terra sono state mescolate. Dopo un po’ le particelle di terra si depositano sul fondo. Che tipo di miscuglio è?',o:['Una sospensione','Un’emulsione','Un miscuglio omogeneo','Una sostanza pura'],a:0,e:'Particelle solide non disciolte, disperse in un liquido, che col tempo sedimentano: è una sospensione.'},
+  {t:'miscugli',img:SVG.suspension(),q:'Come puoi separare la terra dall’acqua fangosa?',o:['Con la filtrazione: la terra resta nel filtro','Non si può separare in nessun modo','Aggiungendo altra acqua','Mescolando a lungo'],a:0,e:'In una sospensione le particelle solide non sono sciolte: il filtro le trattiene. Si può anche lasciar riposare e versare via l’acqua (decantazione).'},
+  {t:'miscugli',img:SVG.granite(),q:'Questo è un pezzo di granito: si vedono a occhio nudo granuli di colori diversi. Come lo classifichi?',o:['Miscuglio eterogeneo','Miscuglio omogeneo','Sostanza pura','Emulsione'],a:0,e:'I diversi minerali (quarzo, feldspato, mica) si distinguono a occhio nudo: il granito è un miscuglio eterogeneo.'},
+  /* stati della materia */
+  {t:'stati',img:SVG.solid(),q:'Il disegno mostra come sono disposte le particelle di una sostanza. In quale stato si trova?',o:['Solido','Liquido','Aeriforme','Non si può dire'],a:0,e:'Le particelle sono vicinissime e ordinate, in posizioni fisse: è lo stato solido.'},
+  {t:'stati',img:SVG.liquid(),q:'Il disegno mostra come sono disposte le particelle di una sostanza. In quale stato si trova?',o:['Liquido','Solido','Aeriforme','Non si può dire'],a:0,e:'Le particelle sono vicine ma disordinate e possono scorrere; la sostanza occupa il fondo del recipiente: è lo stato liquido.'},
+  {t:'stati',img:SVG.gas(),q:'Il disegno mostra come sono disposte le particelle di una sostanza. In quale stato si trova?',o:['Aeriforme','Solido','Liquido','Non si può dire'],a:0,e:'Le particelle sono lontane tra loro e si muovono veloci in ogni direzione, occupando tutto il recipiente: è lo stato aeriforme.'},
+  {t:'stati',img:SVG.liquidShapes(),q:'Versi la stessa acqua in recipienti diversi. Quale proprietà hanno i liquidi?',o:['Volume proprio, ma forma del recipiente','Forma e volume propri','Né forma né volume propri','Forma propria, ma volume variabile'],a:0,e:'Un liquido conserva il suo volume, ma prende la forma del recipiente che lo contiene.'},
+  {t:'stati',img:SVG.gas(),q:'Perché un gas occupa tutto lo spazio a disposizione?',o:['Le sue particelle sono lontane e si muovono liberamente in ogni direzione','Le sue particelle sono ferme','Le sue particelle sono legate strettamente tra loro','Perché è più pesante dell’aria'],a:0,e:'Nei gas le forze tra le particelle sono debolissime: le particelle si allontanano e si muovono ovunque, riempiendo tutto il recipiente.'},
+  {t:'stati',img:SVG.syringes(),q:'Tappi due siringhe: quella piena d’aria si può comprimere, quella piena d’acqua quasi per niente. Perché?',o:['Nell’aria le particelle sono molto distanti tra loro','Le particelle dell’acqua sono più grandi','L’aria non è materia','L’acqua è un solido'],a:0,e:'Nei gas tra le particelle c’è molto spazio vuoto, che si riduce premendo lo stantuffo. Nei liquidi le particelle sono già vicine: per questo sono quasi incomprimibili.'},
+  {t:'stati',img:SVG.solid(),q:'In un solido le particelle…',o:['Vibrano intorno a posizioni fisse','Scorrono le une sulle altre','Si muovono liberamente in ogni direzione','Sono completamente immobili'],a:0,e:'Le particelle di un solido non cambiano posto, ma non sono mai del tutto ferme: vibrano intorno alla loro posizione, tanto più quanto più alta è la temperatura.'},
+  /* calore, temperatura e termometri */
+  {t:'calore',img:SVG.heat('tè','80 °C','cucchiaio','20 °C',false),q:'Metti un cucchiaio freddo in una tazza di tè caldo. In che direzione passa il calore?',o:['Dal tè al cucchiaio','Dal cucchiaio al tè','In nessuna direzione','Prima in un senso, poi nell’altro'],a:0,e:'Il calore passa sempre dal corpo più caldo a quello più freddo: il tè si raffredda un po’ e il cucchiaio si scalda.'},
+  {t:'calore',img:SVG.heat('corpo A','70 °C','corpo B','10 °C'),q:'Che cos’è il calore?',o:['Energia che passa da un corpo più caldo a uno più freddo','La quantità di materia di un corpo','Lo strumento che misura la temperatura','La temperatura di un corpo caldo'],a:0,e:'Il calore è energia in movimento: passa da un corpo a temperatura più alta a uno a temperatura più bassa.'},
+  {t:'calore',img:SVG.tempP(),q:'Nei due recipienti c’è acqua. In quale la temperatura è più alta?',o:['In B, perché le particelle si muovono più velocemente','In A, perché le particelle si muovono più lentamente','È uguale nei due recipienti','In A, perché le particelle sono più vicine'],a:0,e:'La temperatura dipende dall’agitazione delle particelle: più si muovono velocemente, più la temperatura è alta.'},
+  {t:'calore',img:SVG.heat('acqua calda','50 °C','acqua fredda','10 °C'),q:'Calore e temperatura sono la stessa cosa?',o:['No: il calore è energia che passa tra i corpi, la temperatura dice quanto un corpo è caldo','Sì, sono due nomi per la stessa cosa','No: la temperatura si misura in joule e il calore in gradi','Sì, ma solo per i liquidi'],a:0,e:'La temperatura (in °C) indica quanto un corpo è caldo; il calore (in joule) è l’energia che passa da un corpo all’altro quando le temperature sono diverse.'},
+  {t:'calore',img:SVG.pots(),q:'Una pentola e una tazzina contengono acqua bollente alla stessa temperatura. Quale può cedere più calore?',o:['La pentola, perché contiene molta più acqua','La tazzina, perché è più piccola','Cedono la stessa quantità di calore','Nessuna delle due può cedere calore'],a:0,e:'La temperatura è la stessa, ma nella pentola ci sono molte più particelle: raffreddandosi può cedere molto più calore.'},
+  {t:'calore',img:SVG.heat('corpo A','60 °C','corpo B','20 °C',false),q:'Due corpi, uno a 60 °C e uno a 20 °C, restano a contatto a lungo. Che cosa succede?',o:['Raggiungono la stessa temperatura: equilibrio termico','Il corpo caldo diventa sempre più caldo','Il corpo freddo cede calore a quello caldo','Restano a 60 °C e a 20 °C'],a:0,e:'Il calore passa dal corpo caldo a quello freddo finché le temperature diventano uguali: si raggiunge l’equilibrio termico.'},
+  {t:'calore',img:SVG.heat('corpo A','90 °C','corpo B','30 °C'),q:'In quale unità di misura si esprime il calore?',o:['Joule (J) o calorie (cal)','Gradi Celsius (°C)','Litri (L)','Metri (m)'],a:0,e:'Il calore è energia e si misura in joule o in calorie. I gradi Celsius servono invece per la temperatura.'},
+  {t:'calore',img:SVG.thermo(25,-10,50),q:'Che temperatura segna questo termometro?',o:['25 °C','20 °C','30 °C','2,5 °C'],a:0,e:'Il liquido arriva alla tacca media tra 20 e 30: ogni tacchetta vale 1 °C, quindi la temperatura è 25 °C.'},
+  {t:'calore',img:SVG.thermo(-5,-20,40),q:'E questo termometro, che temperatura segna?',o:['−5 °C','5 °C','−15 °C','0 °C'],a:0,e:'Il liquido si ferma 5 tacche sotto lo zero: la temperatura è di 5 gradi sotto zero, cioè −5 °C.'},
+  {t:'calore',img:SVG.thermo(60,-10,110),q:'Nella scala Celsius, a che temperatura il ghiaccio fonde e l’acqua bolle (a livello del mare)?',o:['0 °C e 100 °C','100 °C e 0 °C','10 °C e 50 °C','0 °C e 37 °C'],a:0,e:'La scala Celsius è costruita proprio su questi due punti: 0 °C (ghiaccio che fonde) e 100 °C (acqua che bolle), con l’intervallo diviso in 100 parti uguali.'},
+  {t:'calore',img:SVG.thermo(30,-10,50),q:'Su che cosa si basa il funzionamento di un termometro a liquido?',o:['Il liquido si dilata col caldo e sale nel tubicino','Il liquido evapora col caldo','Il liquido cambia colore col caldo','Il vetro si allunga e spinge il liquido'],a:0,e:'Scaldandosi, il liquido aumenta di volume (si dilata) e sale nel tubicino sottile; raffreddandosi si contrae e scende.'},
+  {t:'calore',img:SVG.thermoTypes(),q:'Quale termometro misura la temperatura senza toccare il corpo?',o:['Il termometro a infrarossi','Il termometro clinico a liquido','Il termometro da ambiente','Il termometro digitale'],a:0,e:'Il termometro a infrarossi rileva a distanza l’energia (radiazione infrarossa) emessa dal corpo: non serve il contatto.'},
+  {t:'calore',img:SVG.thermoTypes(),q:'Perché bisogna aspettare qualche minuto prima di leggere il termometro clinico?',o:['Deve raggiungere la stessa temperatura del corpo','Il liquido deve congelare','Deve ricaricarsi','Non serve aspettare'],a:0,e:'Il termometro riceve calore dal corpo finché raggiunge la sua stessa temperatura (equilibrio termico): solo allora la lettura è corretta.'},
+  /* passaggi di stato */
+  {t:'passaggi',img:SVG.melting(),q:'Un cubetto di ghiaccio lasciato al sole diventa acqua. Come si chiama questo passaggio di stato?',o:['Fusione','Solidificazione','Condensazione','Vaporizzazione'],a:0,e:'Il passaggio da solido a liquido si chiama fusione e avviene assorbendo calore (qui dal sole e dall’aria).'},
+  {t:'passaggi',img:SVG.freezing(),q:'L’acqua messa nel freezer diventa ghiaccio. Come si chiama questo passaggio?',o:['Solidificazione','Fusione','Condensazione','Evaporazione'],a:0,e:'Il passaggio da liquido a solido è la solidificazione: l’acqua cede calore e, a 0 °C, diventa ghiaccio. Fusione e solidificazione avvengono alla stessa temperatura.'},
+  {t:'passaggi',img:SVG.condensation(),q:'Su una bottiglia appena tolta dal frigo compaiono goccioline d’acqua. Da dove vengono?',o:['Dal vapore acqueo dell’aria, che si condensa sulla superficie fredda','Dall’acqua che esce dalla bottiglia','Dal vetro che si scioglie','Dall’acqua della bottiglia che evapora'],a:0,e:'Il vapore acqueo presente nell’aria, toccando la bottiglia fredda, cede calore e torna liquido: è la condensazione.'},
+  {t:'passaggi',img:SVG.evaporation(),q:'Dopo un temporale, al sole, la pozzanghera si asciuga. Come si chiama questo fenomeno?',o:['Evaporazione','Ebollizione','Fusione','Condensazione'],a:0,e:'L’acqua passa lentamente allo stato aeriforme solo dalla superficie, senza bollire: è l’evaporazione, un tipo di vaporizzazione.'},
+  {t:'passaggi',img:SVG.boiling(),q:'Che differenza c’è tra evaporazione ed ebollizione?',o:['L’evaporazione avviene solo in superficie e a ogni temperatura; l’ebollizione in tutto il liquido e a una temperatura precisa','Sono esattamente la stessa cosa','L’ebollizione avviene solo in superficie','L’evaporazione avviene solo a 100 °C'],a:0,e:'Sono due modi della vaporizzazione: l’evaporazione è lenta e superficiale; l’ebollizione coinvolge tutto il liquido, con le bolle, a una temperatura fissa (100 °C per l’acqua).'},
+  {t:'passaggi',img:SVG.heatCurve(false),q:'Il grafico mostra la temperatura del ghiaccio riscaldato nel tempo. Che cosa succede nel tratto orizzontale a 0 °C?',o:['Il ghiaccio fonde e la temperatura resta costante','L’acqua bolle','Il fornello è spento','La temperatura scende'],a:0,e:'Durante un passaggio di stato il calore serve a separare le particelle e la temperatura non cambia: è la sosta termica. A 0 °C il ghiaccio sta fondendo.'},
+  {t:'passaggi',img:SVG.boiling(),q:'Continui a scaldare l’acqua che bolle a 100 °C. Che cosa succede alla sua temperatura?',o:['Resta a 100 °C finché c’è acqua liquida','Sale fino a 150 °C','Scende sotto i 100 °C','Sale e scende continuamente'],a:0,e:'Durante l’ebollizione il calore serve a trasformare l’acqua in vapore: la temperatura resta ferma a 100 °C (sosta termica).'},
+  {t:'passaggi',img:SVG.states(false),q:'Quali passaggi di stato avvengono assorbendo calore?',o:['Fusione e vaporizzazione','Solidificazione e condensazione','Solo la condensazione','Nessuno: tutti cedono calore'],a:0,e:'Per passare da solido a liquido (fusione) e da liquido ad aeriforme (vaporizzazione) le particelle devono separarsi: serve calore. Solidificazione e condensazione invece cedono calore.'},
+  {t:'passaggi',img:SVG.evaporation(),q:'Quando il sudore evapora dalla pelle senti fresco. Perché?',o:['Evaporando, il sudore assorbe calore dalla pelle','Il sudore cede calore alla pelle','Il sudore si solidifica sulla pelle','Il sudore fa entrare aria fredda nel corpo'],a:0,e:'Per evaporare il sudore ha bisogno di calore, che prende dalla pelle: così la pelle si raffredda. È il modo in cui il corpo si difende dal caldo.'}
 ];
 const L='ABCD';
-let order,i,score,answers;
+let sel,order,i,score,answers;
 function shuffle(a){a=a.slice();for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]]}return a}
-function start(){order=Q.map(q=>({...q,perm:shuffle([0,1,2,3])}));i=0;score=0;answers=[];render()}
 const box$=document.getElementById('quiz');
+function menu(){
+  const n=t=>Q.filter(q=>q.t===t).length;
+  box$.innerHTML=`<p class="qtext">Su che cosa vuoi allenarti?</p><div class="opts">
+    <button class="opt" data-t="all"><b>${Q.length}</b><span>Tutte le domande</span></button>
+    ${Object.entries(TOPICS).map(([k,v])=>`<button class="opt" data-t="${k}"><b>${n(k)}</b><span>${v}</span></button>`).join('')}</div>`;
+  box$.querySelectorAll('.opt').forEach(b=>b.onclick=()=>start(b.dataset.t));
+}
+function start(t){sel=t;order=Q.filter(q=>t==='all'||q.t===t).map(q=>({...q,perm:shuffle([0,1,2,3])}));i=0;score=0;answers=[];render()}
 function render(){
-  const q=order[i];
-  box$.innerHTML=`<div class="progress"><div style="width:${i/Q.length*100}%"></div></div>
-   <div class="meta"><span>Domanda ${i+1} di ${Q.length}</span><span>Punti: ${score}</span></div>
+  const q=order[i],n=order.length;
+  box$.innerHTML=`<div class="progress"><div style="width:${i/n*100}%"></div></div>
+   <div class="meta"><span>Domanda ${i+1} di ${n}</span><span>Punti: ${score}</span></div>
    <div class="qimg">${q.img}</div><p class="qtext">${q.q}</p>
    <div class="opts">${q.perm.map((p,k)=>`<button class="opt" data-p="${p}"><b>${L[k]}</b><span>${q.o[p]}</span></button>`).join('')}</div>
    <div class="fb" id="fb"></div>
-   <div class="actions"><button class="btn" id="next" disabled>${i<Q.length-1?'Avanti →':'Vedi il risultato'}</button></div>`;
+   <div class="actions"><button class="btn" id="next" disabled>${i<n-1?'Avanti →':'Vedi il risultato'}</button></div>`;
   box$.querySelectorAll('.opt').forEach(b=>b.onclick=()=>choose(+b.dataset.p));
-  document.getElementById('next').onclick=()=>{i++; i<Q.length?render():result(); box$.scrollIntoView({behavior:'smooth',block:'start'})};
+  document.getElementById('next').onclick=()=>{i++; i<n?render():result(); box$.scrollIntoView({behavior:'smooth',block:'start'})};
 }
 function choose(p){
   const q=order[i],ok=p===q.a; if(ok)score++; answers.push({ok,chosen:q.o[p]});
@@ -213,12 +460,14 @@ function choose(p){
   document.getElementById('next').disabled=false;
 }
 function result(){
-  const msg=score>=9?'Ottimo lavoro! 🎉':score>=7?'Bene, ci sei quasi! 👍':score>=5?'Sufficiente: ripassa le definizioni. 📘':'Rileggi le definizioni e riprova. 💪';
+  const n=order.length,r=score/n;
+  const msg=r>=.9?'Ottimo lavoro! 🎉':r>=.7?'Bene, ci sei quasi! 👍':r>=.5?'Sufficiente: ripassa le definizioni. 📘':'Rileggi le definizioni e riprova. 💪';
   box$.innerHTML=`<div class="progress"><div style="width:100%"></div></div><div class="result">
-    <p style="margin:0;color:var(--muted);font-weight:700">Risultato</p><div class="score">${score} / ${Q.length}</div><p style="font-weight:700">${msg}</p>
+    <p style="margin:0;color:var(--muted);font-weight:700">Risultato${sel==='all'?'':' – '+TOPICS[sel]}</p><div class="score">${score} / ${n}</div><p style="font-weight:700">${msg}</p>
     <div class="review">${order.map((q,k)=>`<div class="${answers[k].ok?'r-ok':'r-ko'}">${answers[k].ok?'✅':'❌'} <b>${k+1}.</b> ${q.q.split('.').slice(-1)[0].trim()||q.q} — <b>${q.o[q.a]}</b>${answers[k].ok?'':` <span style="color:#7c2d12">(hai risposto: ${answers[k].chosen})</span>`}</div>`).join('')}</div>
-    <button class="btn" id="again">Ricomincia</button> <button class="btn" id="todef" style="background:#5f6670">Ripassa le definizioni</button></div>`;
-  document.getElementById('again').onclick=start;
+    <button class="btn" id="again">Ricomincia</button><button class="btn" id="menu">Cambia argomento</button><button class="btn" id="todef" style="background:#5f6670">Ripassa le definizioni</button></div>`;
+  document.getElementById('again').onclick=()=>start(sel);
+  document.getElementById('menu').onclick=menu;
   document.getElementById('todef').onclick=()=>show('def');
 }
 /* ---------- Tabs ---------- */
@@ -229,7 +478,7 @@ function show(v){
 }
 document.getElementById('tab-def').onclick=()=>show('def');
 document.getElementById('tab-quiz').onclick=()=>show('quiz');
-start();
+menu();
 if(location.hash==='#quiz')show('quiz');
 window.addEventListener('hashchange',()=>show(location.hash==='#quiz'?'quiz':'def'));
 </script>
